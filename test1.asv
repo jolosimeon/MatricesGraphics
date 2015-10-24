@@ -54,7 +54,8 @@ function test1_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for test1
 handles.output = hObject;
-
+handles.noOfObjects = 0;
+handles.Objects = Shapes.empty;
 % Update handles structure
 guidata(hObject, handles);
 
@@ -109,10 +110,15 @@ dlg_title = 'Create a Line Segment';
 num_lines =  [1 50;1 50; 1 50; 1 50];
 defaultans = {'','','',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
-display(answer);
 x = str2double([answer(1),answer(3)]);
 y = str2double([answer(2),answer(4)]);
 plot(x, y);
+tempLineSegment = LineSegment;
+tempLineSegment.xCoor = x;
+tempLineSegment.yCoor = y;
+handles.noOfObjects = handles.noOfObjects + 1;
+handles.Objects(handles.noOfObjects) = tempLineSegment;
+guidata(hObject, handles);
 %plot(x,y);
 
 % --- Executes on button press in parabolaPushButton.
@@ -145,11 +151,16 @@ switch choice
         plot(x,y);
     case 'Horizontal'
         y = -100:1:100;
-        x = (a * y.^2) + (c * y) + b;
+        x = (c * y.^2) + (a * y) + b;
         plot(x,y);
-    case 'Cancel'
-        
+    case 'Cancel' 
 end
+tempParabola = Parabola;
+tempParabola.xCoor = x;
+tempParabola.yCoor = y;
+handles.noOfObjects = handles.noOfObjects + 1;
+handles.Objects(handles.noOfObjects) = tempParabola;
+guidata(hObject,handles);
 
 
 % --- Executes on button press in hyperbolaPushButton.
@@ -191,8 +202,6 @@ answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
 x = zeros(1, str2double(answer) + 1);
 y = zeros(1, str2double(answer) + 1);
 
-display(x);
-display(y);
 for a = 1:str2double(answer) 
 prompt = {'X-coordinate','Y-coordinate'};
 dlg_title = 'Create a Polygon';
@@ -205,10 +214,15 @@ end
 x(size(x)) = x(1);
 y(size(y)) = y(1);
 plot(x,y);
+tempPolygon = Polygon;
+tempPolygon.xCoor = x;
+tempPolygon.yCoor = y;
+handles.noOfObjects = handles.noOfObjects + 1;
+handles.Objects(handles.noOfObjects) = tempPolygon;
+guidata(hObject,handles);
 
 
-% --- Executes on button press in elipsePushButton. RENAME THIS TO ELLIPSE
-% LATER PLS REMIND YAY THANKS -- JOLO
+% --- Executes on button press in elipsePushButton.
 function elipsePushButton_Callback(hObject, eventdata, handles)
 % hObject    handle to elipsePushButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -219,25 +233,6 @@ num_lines =  [1 40;1 40; 1 40; 1 40];
 defaultans = {'','','',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
 
-% center is given by (h,k)
-% center x
-h = str2double(answer(1));
-% center Y
-k = str2double(answer(2));
-% horizontal distance
-a = str2double(answer(3))/2;
-% vertical distance
-b = str2double(answer(4))/2;
-
-ezplot('x^2/4 + y^2/9 = 1'
-
-x = -100:1:100;
-y = k + sqrt(b.^2 .* (1-(x - h).^2 ./ a.^2));
-display(real(y));
-plot(x, y);
-% y = k - sqrt(b^2 * (1-(x - h).^2 / a^2));
-
-% plot(x,y);
 
 % --- Executes on button press in vectorPushButton.
 function vectorPushButton_Callback(hObject, eventdata, handles)
@@ -249,6 +244,9 @@ dlg_title = 'Create a Vector';
 num_lines =  [1 40;1 40];
 defaultans = {'',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+x = [0,str2double(answer(1))];
+y = [0,str2double(answer(2))];
+plot(x,y);
 
 
 % --- Executes on selection change in operationsComboBox.
@@ -282,7 +280,7 @@ function figuresListBox_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns figuresListBox contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from figuresListBox
-
+contents = cellstr 
 
 % --- Executes during object creation, after setting all properties.
 function figuresListBox_CreateFcn(hObject, eventdata, handles)
@@ -302,6 +300,8 @@ function createPushButton_Callback(hObject, eventdata, handles)
 % hObject    handle to createPushButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+display(handles.noOfObjects);
+display(handles.Objects(handles.noOfObjects));
 
 
 % --- Executes on button press in transformPushButton.

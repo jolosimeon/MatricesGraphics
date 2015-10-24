@@ -3,6 +3,8 @@ classdef Shapes < matlab.mixin.Heterogeneous
     %   Detailed explanation goes here
     
     properties
+        xCoor %stores the x - coordinates
+        yCoor %stores the y - coordinates
     end
     
     methods

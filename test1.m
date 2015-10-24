@@ -56,6 +56,7 @@ function test1_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 handles.noOfObjects = 0;
 handles.Objects = Shapes.empty;
+handles.inputFileNames = [];
 % Update handles structure
 guidata(hObject, handles);
 
@@ -118,8 +119,9 @@ tempLineSegment.xCoor = x;
 tempLineSegment.yCoor = y;
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempLineSegment;
+handles.inputFileNames = [handles.inputFileNames, 'Line Segment'];
+set(handles.figuresListBox, 'string', {handles.inputFileNames});
 guidata(hObject, handles);
-%plot(x,y);
 
 % --- Executes on button press in parabolaPushButton.
 function parabolaPushButton_Callback(hObject, eventdata, handles)
@@ -153,9 +155,16 @@ switch choice
         y = -100:1:100;
         x = (c * y.^2) + (a * y) + b;
         plot(x,y);
-    case 'Cancel'
-        
+    case 'Cancel' 
 end
+tempParabola = Parabola;
+tempParabola.xCoor = x;
+tempParabola.yCoor = y;
+handles.noOfObjects = handles.noOfObjects + 1;
+handles.Objects(handles.noOfObjects) = tempParabola;
+handles.inputFileNames = [handles.inputFileNames, 'Parabola'];
+set(handles.figuresListBox, 'string', handles.inputFileNames);
+guidata(hObject,handles);
 
 
 % --- Executes on button press in hyperbolaPushButton.
@@ -215,8 +224,6 @@ answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
 x = zeros(1, str2double(answer) + 1);
 y = zeros(1, str2double(answer) + 1);
 
-display(x);
-display(y);
 for a = 1:str2double(answer) 
 prompt = {'X-coordinate','Y-coordinate'};
 dlg_title = 'Create a Polygon';
@@ -229,16 +236,23 @@ end
 x(size(x)) = x(1);
 y(size(y)) = y(1);
 plot(x,y);
+tempPolygon = Polygon;
+tempPolygon.xCoor = x;
+tempPolygon.yCoor = y;
+handles.noOfObjects = handles.noOfObjects + 1;
+handles.Objects(handles.noOfObjects) = tempPolygon;
+handles.inputFileNames = [handles.inputFileNames, 'Polygon'];
+set(handles.figuresListBox, 'string', handles.inputFileNames);
+guidata(hObject,handles);
 
 
-% --- Executes on button press in elipsePushButton. RENAME THIS TO ELLIPSE
-% LATER PLS REMIND YAY THANKS -- JOLO
-function elipsePushButton_Callback(hObject, eventdata, handles)
+% --- Executes on button press in ellipsePushButton.
+function ellipsePushButton_Callback(hObject, eventdata, handles)
 % hObject    handle to elipsePushButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 prompt = {'Center X-coordinate','Center Y-coordinate','Horizontal Distance','Vertical Distance'};
-dlg_title = 'Create an Elipse';
+dlg_title = 'Create an Ellipse';
 num_lines =  [1 40;1 40; 1 40; 1 40];
 defaultans = {'','','',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
@@ -259,6 +273,7 @@ x=h+a*cos(t);
 y=k+b*sin(t);
 plot(x,y)
 
+
 % --- Executes on button press in vectorPushButton.
 function vectorPushButton_Callback(hObject, eventdata, handles)
 % hObject    handle to vectorPushButton (see GCBO)
@@ -271,6 +286,14 @@ defaultans = {'',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
 x = [0,str2double(answer(1))];
 y = [0,str2double(answer(2))];
+tempVector = Vector;
+tempVector.xCoor = x;
+tempVector.yCoor = y;
+handles.noOfObjects = handles.noOfObjects + 1;
+handles.Objects(handles.noOfObjects) = tempVector;
+handles.inputFileNames = [handles.inputFileNames, 'Vector'];
+set(handles.figuresListBox, 'string', handles.inputFileNames);
+guidata(hObject,handles);
 plot(x,y);
 
 
@@ -305,7 +328,6 @@ function figuresListBox_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns figuresListBox contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from figuresListBox
-
 
 % --- Executes during object creation, after setting all properties.
 function figuresListBox_CreateFcn(hObject, eventdata, handles)
