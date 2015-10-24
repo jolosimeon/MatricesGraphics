@@ -3,6 +3,7 @@ classdef Hyperbola < Shapes
     %   Detailed explanation goes here
     
     properties
+        yCoorNeg
     end
     
     methods

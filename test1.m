@@ -98,7 +98,15 @@ dlg_title = 'Create a Point';
 num_lines =  [1 40;1 40];
 defaultans = {'',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
-[x, y] = deal(answer{:});
+tempPoint = Point;
+tempPoint.xCoor = answer(1);
+tempPoint.yCoor = answer(2);
+handles.noOfObjects = handles.noOfObjects + 1;
+handles.Objects(handles.noOfObjects) = tempPoint;
+handles.inputFileNames = [handles.inputFileNames; 'Point',blanks(7)];
+display(handles.inputFileNames);
+set(handles.figuresListBox, 'string', {handles.inputFileNames});
+guidata(hObject, handles);
 
 
 % --- Executes on button press in lineSegmentPushButton.
@@ -119,7 +127,8 @@ tempLineSegment.xCoor = x;
 tempLineSegment.yCoor = y;
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempLineSegment;
-handles.inputFileNames = [handles.inputFileNames, 'Line Segment'];
+handles.inputFileNames = [handles.inputFileNames; 'Line Segment'];
+display(handles.inputFileNames);
 set(handles.figuresListBox, 'string', {handles.inputFileNames});
 guidata(hObject, handles);
 
@@ -162,8 +171,8 @@ tempParabola.xCoor = x;
 tempParabola.yCoor = y;
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempParabola;
-handles.inputFileNames = [handles.inputFileNames, 'Parabola'];
-set(handles.figuresListBox, 'string', handles.inputFileNames);
+handles.inputFileNames = [handles.inputFileNames; 'Parabola',blanks(4)];
+set(handles.figuresListBox, 'string', {handles.inputFileNames});
 guidata(hObject,handles);
 
 
@@ -206,9 +215,18 @@ switch choice
        negY = -sqrt((x - h).^2 * b^2 / a^2 - b^2);
        plot(x, posY);
        plot(x, negY);
-    case 'Cancel'
-        
+    case 'Cancel'       
 end
+tempHyperbola = Hyperbola;
+tempHyperbola.xCoor = x;
+tempHyperbola.yCoorNeg = negY;
+tempHyperbola.yCoor = posY;
+handles.noOfObjects = handles.noOfObjects + 1;
+handles.Objects(handles.noOfObjects) = tempHyperbola;
+handles.inputFileNames = [handles.inputFileNames; 'Hyperbola',blanks(3)];
+display(handles.inputFileNames);
+set(handles.figuresListBox, 'string', {handles.inputFileNames});
+guidata(hObject, handles);
 
 
 % --- Executes on button press in polygonPushButton.
@@ -241,8 +259,8 @@ tempPolygon.xCoor = x;
 tempPolygon.yCoor = y;
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempPolygon;
-handles.inputFileNames = [handles.inputFileNames, 'Polygon'];
-set(handles.figuresListBox, 'string', handles.inputFileNames);
+handles.inputFileNames = [handles.inputFileNames; 'Polygon',blanks(5)];
+set(handles.figuresListBox, 'string', {handles.inputFileNames});
 guidata(hObject,handles);
 
 
@@ -271,7 +289,16 @@ b = str2double(answer(4))/2;
 t=-pi:0.01:pi;
 x=h+a*cos(t);
 y=k+b*sin(t);
-plot(x,y)
+plot(x,y);
+tempEllipse = Ellipse;
+tempEllipse.xCoor = x;
+tempEllipse.yCoor = y;
+handles.noOfObjects = handles.noOfObjects + 1;
+handles.Objects(handles.noOfObjects) = tempEllipse;
+handles.inputFileNames = [handles.inputFileNames; 'Ellipse',blanks(5)];
+display(handles.inputFileNames);
+set(handles.figuresListBox, 'string', {handles.inputFileNames});
+guidata(hObject, handles);
 
 
 % --- Executes on button press in vectorPushButton.
@@ -291,8 +318,8 @@ tempVector.xCoor = x;
 tempVector.yCoor = y;
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempVector;
-handles.inputFileNames = [handles.inputFileNames, 'Vector'];
-set(handles.figuresListBox, 'string', handles.inputFileNames);
+handles.inputFileNames = [handles.inputFileNames; 'Vector',blanks(6)];
+set(handles.figuresListBox, 'string', {handles.inputFileNames});
 guidata(hObject,handles);
 plot(x,y);
 
