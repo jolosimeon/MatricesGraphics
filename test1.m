@@ -22,7 +22,7 @@ function varargout = test1(varargin)
 
 % Edit the above text to modify the response to help test1
 
-% Last Modified by GUIDE v2.5 24-Oct-2015 15:52:46
+% Last Modified by GUIDE v2.5 24-Oct-2015 22:08:17
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -57,6 +57,7 @@ handles.output = hObject;
 handles.noOfObjects = 0;
 handles.Objects = Shapes.empty;
 handles.inputFileNames = [];
+handles.currentFigure = Shapes;
 % Update handles structure
 guidata(hObject, handles);
 
@@ -99,11 +100,13 @@ num_lines =  [1 40;1 40];
 defaultans = {'',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
 tempPoint = Point;
-tempPoint.xCoor = answer(1);
-tempPoint.yCoor = answer(2);
+tempPoint.xCoor = str2double(answer(1));
+tempPoint.yCoor = str2double(answer(2));
+tempPoint.handle = plot(tempPoint.xCoor, tempPoint.yCoor, '*');
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempPoint;
 handles.inputFileNames = [handles.inputFileNames; 'Point',blanks(7)];
+display(handles.Objects);
 display(handles.inputFileNames);
 set(handles.figuresListBox, 'string', {handles.inputFileNames});
 guidata(hObject, handles);
@@ -121,10 +124,10 @@ defaultans = {'','','',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
 x = str2double([answer(1),answer(3)]);
 y = str2double([answer(2),answer(4)]);
-plot(x, y);
 tempLineSegment = LineSegment;
 tempLineSegment.xCoor = x;
 tempLineSegment.yCoor = y;
+tempLineSegment.handle = plot(x, y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempLineSegment;
 handles.inputFileNames = [handles.inputFileNames; 'Line Segment'];
@@ -142,7 +145,7 @@ dlg_title = 'Create a Parabola';
 num_lines =  [1 45;1 45; 1 45];
 defaultans = {'','',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
-if (~isempty(answer))
+if ~isempty(answer)
     %x - vertex
     a = str2double(answer(1));
     
@@ -162,21 +165,23 @@ if (~isempty(answer))
         case 'Vertical'
             x = -100:1:100;
             y = (c * x.^2) + (a * x) + b;
-            plot(x,y);
         case 'Horizontal'
             y = -100:1:100;
             x = (c * y.^2) + (a * y) + b;
-            plot(x,y);
         case 'Cancel'
     end
-tempParabola = Parabola;
-tempParabola.xCoor = x;
-tempParabola.yCoor = y;
-handles.noOfObjects = handles.noOfObjects + 1;
-handles.Objects(handles.noOfObjects) = tempParabola;
-handles.inputFileNames = [handles.inputFileNames; 'Parabola',blanks(4)];
-set(handles.figuresListBox, 'string', {handles.inputFileNames});
-guidata(hObject,handles);
+    
+    if ~isempty(x)
+        tempParabola = Parabola;
+        tempParabola.xCoor = x;
+        tempParabola.yCoor = y;
+        tempParabola.handle = plot(x,y);
+        handles.noOfObjects = handles.noOfObjects + 1;
+        handles.Objects(handles.noOfObjects) = tempParabola;
+        handles.inputFileNames = [handles.inputFileNames; 'Parabola',blanks(4)];
+        set(handles.figuresListBox, 'string', {handles.inputFileNames});
+        guidata(hObject,handles);
+    end
 end
 
 
@@ -212,26 +217,28 @@ if (~isempty(answer))
         case 'Vertical'
            posY = sqrt((x - h).^2 * b^2 / a^2 + b^2);
            negY = -sqrt((x - h).^2 * b^2 / a^2 + b^2);
-           plot(x, posY);
-           plot(x, negY);
 
         case 'Horizontal'
            posY = sqrt((x - h).^2 * b^2 / a^2 - b^2);
            negY = -sqrt((x - h).^2 * b^2 / a^2 - b^2);
-           plot(x, posY);
-           plot(x, negY);
+           
         case 'Cancel'
-    end    
-tempHyperbola = Hyperbola;
-tempHyperbola.xCoor = x;
-tempHyperbola.yCoorNeg = negY;
-tempHyperbola.yCoor = posY;
-handles.noOfObjects = handles.noOfObjects + 1;
-handles.Objects(handles.noOfObjects) = tempHyperbola;
-handles.inputFileNames = [handles.inputFileNames; 'Hyperbola',blanks(3)];
-display(handles.inputFileNames);
-set(handles.figuresListBox, 'string', {handles.inputFileNames});
-guidata(hObject, handles);
+    end
+    
+    if ~isempty(posY)
+        tempHyperbola = Hyperbola;
+        tempHyperbola.xCoor = x;
+        tempHyperbola.yCoorNeg = negY;
+        tempHyperbola.yCoor = posY;
+        tempHyperbola.handle = plot(x, posY);
+        tempHyperbola.handle2 = plot(x, negY);
+        handles.noOfObjects = handles.noOfObjects + 1;
+        handles.Objects(handles.noOfObjects) = tempHyperbola;
+        handles.inputFileNames = [handles.inputFileNames; 'Hyperbola',blanks(3)];
+        display(handles.inputFileNames);
+        set(handles.figuresListBox, 'string', {handles.inputFileNames});
+        guidata(hObject, handles);
+    end
 end
 
 
@@ -249,26 +256,26 @@ x = zeros(1, str2double(answer) + 1);
 y = zeros(1, str2double(answer) + 1);
 
 for a = 1:str2double(answer) 
-prompt = {'X-coordinate','Y-coordinate'};
-dlg_title = 'Create a Polygon';
-num_lines =  [1 40;1 40];
-defaultans = {'',''};
-answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
-x(a) = str2double(answer(1));
-y(a) = str2double(answer(2));
+    prompt = {'X-coordinate','Y-coordinate'};
+    dlg_title = 'Create a Polygon';
+    num_lines =  [1 40;1 40];
+    defaultans = {'',''};
+    answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+    x(a) = str2double(answer(1));
+    y(a) = str2double(answer(2));
 end
+
 x(size(x)) = x(1);
 y(size(y)) = y(1);
-plot(x,y);
 tempPolygon = Polygon;
 tempPolygon.xCoor = x;
 tempPolygon.yCoor = y;
+tempPolgyon.handle = plot(x, y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempPolygon;
 handles.inputFileNames = [handles.inputFileNames; 'Polygon',blanks(5)];
 set(handles.figuresListBox, 'string', {handles.inputFileNames});
 guidata(hObject,handles);
-
 
 % --- Executes on button press in ellipsePushButton.
 function ellipsePushButton_Callback(hObject, eventdata, handles)
@@ -295,10 +302,11 @@ b = str2double(answer(4))/2;
 t=-pi:0.01:pi;
 x=h+a*cos(t);
 y=k+b*sin(t);
-plot(x,y);
+
 tempEllipse = Ellipse;
 tempEllipse.xCoor = x;
 tempEllipse.yCoor = y;
+tempEllipse.handle = plot(x,y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempEllipse;
 handles.inputFileNames = [handles.inputFileNames; 'Ellipse',blanks(5)];
@@ -322,12 +330,13 @@ y = [0,str2double(answer(2))];
 tempVector = Vector;
 tempVector.xCoor = x;
 tempVector.yCoor = y;
+tempVector.handle = plot(x,y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempVector;
 handles.inputFileNames = [handles.inputFileNames; 'Vector',blanks(6)];
 set(handles.figuresListBox, 'string', {handles.inputFileNames});
 guidata(hObject,handles);
-plot(x,y);
+
 
 
 % --- Executes on selection change in operationsComboBox.
@@ -361,6 +370,8 @@ function figuresListBox_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns figuresListBox contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from figuresListBox
+index_selected = get(hObject,'Value');
+
 
 % --- Executes during object creation, after setting all properties.
 function figuresListBox_CreateFcn(hObject, eventdata, handles)
@@ -375,13 +386,18 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in createPushButton.
-function createPushButton_Callback(hObject, eventdata, handles)
-% hObject    handle to createPushButton (see GCBO)
+% --- Executes on button press in deletePushButton.
+function deletePushButton_Callback(hObject, eventdata, handles)
+% hObject    handle to deletePushButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+handles.noOfObjects = handles.noOfObjects - 1;
+display(handles.Objects(get(handles.figuresListBox, 'Value')));
+delete(handles.Objects(get(handles.figuresListBox, 'Value')).handle);
 display(handles.noOfObjects);
-display(handles.Objects(handles.noOfObjects));
+
+
 
 
 % --- Executes on button press in transformPushButton.

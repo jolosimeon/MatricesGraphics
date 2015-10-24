@@ -4,6 +4,9 @@ classdef Hyperbola < Shapes
     
     properties
         yCoorNeg
+        handle2
+        transformedyCoorNeg
+        transformedHandle2
     end
     
     methods

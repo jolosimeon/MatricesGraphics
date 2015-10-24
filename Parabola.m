@@ -5,6 +5,7 @@ classdef Parabola < Shapes
     end
     
     methods
+        
     end
     
 end

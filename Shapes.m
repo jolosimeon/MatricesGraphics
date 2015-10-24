@@ -5,9 +5,14 @@ classdef Shapes < matlab.mixin.Heterogeneous
     properties
         xCoor %stores the x - coordinates
         yCoor %stores the y - coordinates
+        handle %stores the handle when plotted
+        transformedXCoor %stores the transformed x - coordinates
+        transformedYCoor %stores the transformed y - coordinates
+        transformedHandle %stores the transformed handle when plotted
     end
     
     methods
+        
     end
     
 end

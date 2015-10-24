@@ -3,6 +3,8 @@ classdef Ellipse < Shapes
     %   Detailed explanation goes here
     
     properties
+        a
+        b
     end
     
     methods
