@@ -191,37 +191,6 @@ num_lines =  [1 40;1 40; 1 40; 1 40];
 defaultans = {'','','',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
 
-<<<<<<< HEAD
-% center is given by (h,k)
-% center x
-h = str2double(answer(1));
-% center Y
-k = str2double(answer(2));
-% horizontal distance
-a = str2double(answer(3))/2;
-% vertical distance
-b = str2double(answer(4))/2;
-
-x = -100:1:100;
-% Construct a questdlg with three options
-choice = questdlg('What is the orientation', ...
-    'Orientation', ...
-	'Vertical','Horizontal','Cancel');
-% Handle response
-switch choice
-    case 'Vertical'
-       posY = sqrt((x - h).^2 * b^2 / a^2 + b^2);
-       negY = -sqrt((x - h).^2 * b^2 / a^2 + b^2);
-       plot(x, posY);
-       plot(x, negY);
-
-    case 'Horizontal'
-       posY = sqrt((x - h).^2 * b^2 / a^2 - b^2);
-       negY = -sqrt((x - h).^2 * b^2 / a^2 - b^2);
-       plot(x, posY);
-       plot(x, negY);
-    case 'Cancel'       
-=======
 if (~isempty(answer))
     % center is given by (h,k)
     % center x
@@ -253,8 +222,6 @@ if (~isempty(answer))
            plot(x, negY);
         case 'Cancel'
     end    
->>>>>>> origin/master
-end
 tempHyperbola = Hyperbola;
 tempHyperbola.xCoor = x;
 tempHyperbola.yCoorNeg = negY;
@@ -265,6 +232,7 @@ handles.inputFileNames = [handles.inputFileNames; 'Hyperbola',blanks(3)];
 display(handles.inputFileNames);
 set(handles.figuresListBox, 'string', {handles.inputFileNames});
 guidata(hObject, handles);
+end
 
 
 % --- Executes on button press in polygonPushButton.
