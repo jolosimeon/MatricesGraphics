@@ -1,8 +1,8 @@
-classdef LineSegment
-    %UNTITLED2 Summary of this class goes here
-    %   Detailed explanation goes here
+classdef LineSegment < Shapes
     
     properties
+        xCoor %contains the x coordinates
+        yCoor %contains the y coordinates
     end
     
     methods

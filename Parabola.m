@@ -1,4 +1,4 @@
-classdef Parabola
+classdef Parabola < Shapes
     %Parabola yes
     
     properties

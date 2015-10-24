@@ -54,7 +54,8 @@ function test1_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for test1
 handles.output = hObject;
-
+handles.noOfObjects = 0;
+handles.Objects = Shapes.empty;
 % Update handles structure
 guidata(hObject, handles);
 
@@ -109,10 +110,15 @@ dlg_title = 'Create a Line Segment';
 num_lines =  [1 50;1 50; 1 50; 1 50];
 defaultans = {'','','',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
-display(answer);
 x = str2double([answer(1),answer(3)]);
 y = str2double([answer(2),answer(4)]);
 plot(x, y);
+tempLineSegment = LineSegment;
+tempLineSegment.xCoor = x;
+tempLineSegment.yCoor = y;
+handles.noOfObjects = handles.noOfObjects + 1;
+handles.Objects(handles.noOfObjects) = tempLineSegment;
+guidata(hObject, handles);
 %plot(x,y);
 
 % --- Executes on button press in parabolaPushButton.
@@ -319,6 +325,8 @@ function createPushButton_Callback(hObject, eventdata, handles)
 % hObject    handle to createPushButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+display(handles.noOfObjects);
+display(handles.Objects(handles.noOfObjects));
 
 
 % --- Executes on button press in transformPushButton.

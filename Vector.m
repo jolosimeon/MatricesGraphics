@@ -1,4 +1,4 @@
-classdef Vector
+classdef Vector < Shapes
     %UNTITLED3 Summary of this class goes here
     %   Detailed explanation goes here
     
