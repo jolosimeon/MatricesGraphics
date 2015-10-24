@@ -231,7 +231,7 @@ if (~isempty(answer))
         tempHyperbola.yCoorNeg = negY;
         tempHyperbola.yCoor = posY;
         tempHyperbola.handle = plot(x, posY);
-        tempHyperbola.handle = plot(x, negY);
+        tempHyperbola.handle2 = plot(x, negY);
         handles.noOfObjects = handles.noOfObjects + 1;
         handles.Objects(handles.noOfObjects) = tempHyperbola;
         handles.inputFileNames = [handles.inputFileNames; 'Hyperbola',blanks(3)];
@@ -270,13 +270,12 @@ y(size(y)) = y(1);
 tempPolygon = Polygon;
 tempPolygon.xCoor = x;
 tempPolygon.yCoor = y;
-tempPolgyon = plot(x, y);
+tempPolgyon.handle = plot(x, y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempPolygon;
 handles.inputFileNames = [handles.inputFileNames; 'Polygon',blanks(5)];
 set(handles.figuresListBox, 'string', {handles.inputFileNames});
 guidata(hObject,handles);
-
 
 % --- Executes on button press in ellipsePushButton.
 function ellipsePushButton_Callback(hObject, eventdata, handles)
@@ -307,7 +306,7 @@ y=k+b*sin(t);
 tempEllipse = Ellipse;
 tempEllipse.xCoor = x;
 tempEllipse.yCoor = y;
-tempEllipse = plot(x,y);
+tempEllipse.handle = plot(x,y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempEllipse;
 handles.inputFileNames = [handles.inputFileNames; 'Ellipse',blanks(5)];
@@ -393,11 +392,15 @@ function deletePushButton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-display(handles.noOfObjects);
-display(handles.Objects(handles.noOfObjects));
-delete(handles.Objects(get(handles.figuresListBox, 'Value')).handle);
 handles.noOfObjects = handles.noOfObjects - 1;
-for 
+display(handles.Objects(get(handles.figuresListBox, 'Value')));
+delete(handles.Objects(get(handles.figuresListBox, 'Value')).handle);
+display(handles.noOfObjects);
+listboxItems = get(handles.figuresListBox1, 'string');
+selectedItems = get(handles.figuresListBox, 'value');
+selectedItem = listboxItems(selectedItems);
+
+
 
 
 % --- Executes on button press in transformPushButton.
