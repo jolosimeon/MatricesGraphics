@@ -163,17 +163,6 @@ num_lines =  [1 40;1 40; 1 40; 1 40];
 defaultans = {'','','',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
 
-% center is given by (h,k)
-% center x
-h = str2double(answer(1));
-% center Y
-k = str2double(answer(2));
-% horizontal distance
-a = str2double(answer(3))/2;
-% vertical distance
-b = str2double(answer(4))/2;
-
-x = -100:1:100;
 % Construct a questdlg with three options
 choice = questdlg('What is the orientation', ...
     'Orientation', ...
@@ -181,16 +170,9 @@ choice = questdlg('What is the orientation', ...
 % Handle response
 switch choice
     case 'Vertical'
-       posY = sqrt((x - h).^2 * b^2 / a^2 + b^2);
-       negY = -sqrt((x - h).^2 * b^2 / a^2 + b^2);
-       plot(x, posY);
-       plot(x, negY);
-
+        
     case 'Horizontal'
-       posY = sqrt((x - h).^2 * b^2 / a^2 - b^2);
-       negY = -sqrt((x - h).^2 * b^2 / a^2 - b^2);
-       plot(x, posY);
-       plot(x, negY);
+       
     case 'Cancel'
         
 end
@@ -247,11 +229,15 @@ a = str2double(answer(3))/2;
 % vertical distance
 b = str2double(answer(4))/2;
 
-%copy paste from net do not question pls
-t=-pi:0.01:pi;
-x=h+a*cos(t);
-y=k+b*sin(t);
-plot(x,y)
+ezplot('x^2/4 + y^2/9 = 1'
+
+x = -100:1:100;
+y = k + sqrt(b.^2 .* (1-(x - h).^2 ./ a.^2));
+display(real(y));
+plot(x, y);
+% y = k - sqrt(b^2 * (1-(x - h).^2 / a^2));
+
+% plot(x,y);
 
 % --- Executes on button press in vectorPushButton.
 function vectorPushButton_Callback(hObject, eventdata, handles)
