@@ -145,7 +145,7 @@ switch choice
         plot(x,y);
     case 'Horizontal'
         y = -100:1:100;
-        x = (a * y.^2) + (c * y) + b;
+        x = (c * y.^2) + (a * y) + b;
         plot(x,y);
     case 'Cancel'
         
