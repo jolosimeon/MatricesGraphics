@@ -396,7 +396,6 @@ function deletePushButton_Callback(hObject, eventdata, handles)
 
 handles.noOfObjects = handles.noOfObjects - 1;
 display(handles.Objects(get(handles.figuresListBox, 'Value')));
-
 delete(handles.Objects(get(handles.figuresListBox, 'Value')).handle);
 display(handles.noOfObjects);
 
@@ -413,8 +412,6 @@ if ~isempty(PNUnames)
 PNUnames(indexedPNU) = []; 
 set(handles.figuresListBox,'String',PNUnames,'value', newPlace); 
 end
-
-
 
 
 
