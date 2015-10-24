@@ -356,10 +356,3 @@ function transformPushButton_Callback(hObject, eventdata, handles)
 % hObject    handle to transformPushButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in ellipsePushButton.
-function ellipsePushButton_Callback(hObject, eventdata, handles)
-% hObject    handle to ellipsePushButton (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
