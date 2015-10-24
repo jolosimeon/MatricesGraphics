@@ -104,12 +104,16 @@ function lineSegmentPushButton_Callback(hObject, eventdata, handles)
 % hObject    handle to lineSegmentPushButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-prompt = {'X-coordinate (Point 1)','Y-coordinate (Pont 1)','X-coordinate (Point 2)','Y-coordinate (Pont 2)'};
+prompt = {'X-coordinate (Point 1)','Y-coordinate (Point 1)','X-coordinate (Point 2)','Y-coordinate (Point 2)'};
 dlg_title = 'Create a Line Segment';
 num_lines =  [1 50;1 50; 1 50; 1 50];
 defaultans = {'','','',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
-[x1, y1, x2, y2] = deal(answer{:});
+display(answer);
+x = str2double([answer(1),answer(3)]);
+y = str2double([answer(2),answer(4)]);
+plot(x, y);
+%plot(x,y);
 
 % --- Executes on button press in parabolaPushButton.
 function parabolaPushButton_Callback(hObject, eventdata, handles)
@@ -121,24 +125,32 @@ dlg_title = 'Create a Parabola';
 num_lines =  [1 45;1 45; 1 45];
 defaultans = {'','',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+%x - vertex
+a = str2double(answer(1));
+%y - intercept
+b = str2double(answer(2));
+%the power
+c = str2double(answer(3))
 
-if ~isempty(answer)
-    
-    
-    % Construct a questdlg with three options
-    choice = questdlg('What is the orientation', ...
-        'Orientation', ...
-        'Vertical','Horizontal','Cancel');
-    % Handle response
-    switch choice
-        case 'Vertical'
+
+% Construct a questdlg with three options
+choice = questdlg('What is the orientation', ...
+    'Orientation', ...
+	'Vertical','Horizontal','Cancel');
+% Handle response
+switch choice
+    case 'Vertical'
+        x = -100:1:100;
+        y = (c * x.^2) + (a * x) + b;
+        plot(x,y);
+    case 'Horizontal'
+        y = -100:1:100;
+        x = (a * y.^2) + (c * y) + b;
+        plot(x,y);
+    case 'Cancel'
         
-        case 'Horizontal'
-       
-        case 'Cancel'
-                
-    end
 end
+
 
 % --- Executes on button press in hyperbolaPushButton.
 function hyperbolaPushButton_Callback(hObject, eventdata, handles)
@@ -176,14 +188,23 @@ dlg_title = 'Create a Polygon';
 num_lines =  [1 40];
 defaultans = {'3'};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+x = zeros(1, str2double(answer) + 1);
+y = zeros(1, str2double(answer) + 1);
 
+display(x);
+display(y);
 for a = 1:str2double(answer) 
 prompt = {'X-coordinate','Y-coordinate'};
 dlg_title = 'Create a Polygon';
 num_lines =  [1 40;1 40];
 defaultans = {'',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+x(a) = str2double(answer(1));
+y(a) = str2double(answer(2));
 end
+x(size(x)) = x(1);
+y(size(y)) = y(1);
+plot(x,y);
 
 
 % --- Executes on button press in elipsePushButton.
