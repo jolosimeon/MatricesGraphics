@@ -399,6 +399,16 @@ display(handles.Objects(get(handles.figuresListBox, 'Value')));
 delete(handles.Objects(get(handles.figuresListBox, 'Value')).handle);
 display(handles.noOfObjects);
 
+% to delete select from listbox
+selected = get(handles.figuresListBox,'Value');
+prev_str = get(handles.figuresListBox, 'String');
+if ~isempty(prev_str)
+    prev_str(get(handles.figuresListBox,'Value')) = [];
+    set(handles.figuresListBox, 'String', prev_str, ...
+        'Value', min(selected,length(prev_str)));
+end
+
+
 
 % --- Executes on button press in transformPushButton.
 function transformPushButton_Callback(hObject, eventdata, handles)
