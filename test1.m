@@ -145,7 +145,7 @@ switch choice
         plot(x,y);
     case 'Horizontal'
         y = -100:1:100;
-        x = (a * y.^2) + (c * y) + b;
+        x = (c * y.^2) + (a * y) + b;
         plot(x,y);
     case 'Cancel'
         
@@ -263,6 +263,9 @@ dlg_title = 'Create a Vector';
 num_lines =  [1 40;1 40];
 defaultans = {'',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+x = [0,str2double(answer(1))];
+y = [0,str2double(answer(2))];
+plot(x,y);
 
 
 % --- Executes on selection change in operationsComboBox.
