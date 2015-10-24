@@ -22,7 +22,7 @@ function varargout = test1(varargin)
 
 % Edit the above text to modify the response to help test1
 
-% Last Modified by GUIDE v2.5 21-Oct-2015 19:07:00
+% Last Modified by GUIDE v2.5 24-Oct-2015 15:52:46
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -248,7 +248,7 @@ guidata(hObject,handles);
 
 % --- Executes on button press in ellipsePushButton.
 function ellipsePushButton_Callback(hObject, eventdata, handles)
-% hObject    handle to elipsePushButton (see GCBO)
+% hObject    handle to ellipsePushButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 prompt = {'Center X-coordinate','Center Y-coordinate','Horizontal Distance','Vertical Distance'};
@@ -354,5 +354,12 @@ display(handles.Objects(handles.noOfObjects));
 % --- Executes on button press in transformPushButton.
 function transformPushButton_Callback(hObject, eventdata, handles)
 % hObject    handle to transformPushButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in ellipsePushButton.
+function ellipsePushButton_Callback(hObject, eventdata, handles)
+% hObject    handle to ellipsePushButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
