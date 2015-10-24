@@ -270,7 +270,9 @@ y(size(y)) = y(1);
 tempPolygon = Polygon;
 tempPolygon.xCoor = x;
 tempPolygon.yCoor = y;
-tempPolgyon.handle = plot(x, y);
+h1 = plot(x, y);
+tempPolgyon.handle = h1;
+display(tempPolygon);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempPolygon;
 handles.inputFileNames = [handles.inputFileNames; 'Polygon',blanks(5)];
@@ -394,16 +396,22 @@ function deletePushButton_Callback(hObject, eventdata, handles)
 
 handles.noOfObjects = handles.noOfObjects - 1;
 display(handles.Objects(get(handles.figuresListBox, 'Value')));
+
 delete(handles.Objects(get(handles.figuresListBox, 'Value')).handle);
 display(handles.noOfObjects);
 
 % to delete select from listbox
-selected = get(handles.figuresListBox,'Value');
-prev_str = get(handles.figuresListBox, 'String');
-if ~isempty(prev_str)
-    prev_str(get(handles.figuresListBox,'Value')) = [];
-    set(handles.figuresListBox, 'String', prev_str, ...
-        'Value', min(selected,length(prev_str)));
+indexedPNU = get(handles.figuresListBox,'value'); 
+string =  get(handles.figuresListBox,'string');
+ind=find(ismember(handles.inputFileNames,string));
+handles.inputFileNames(ind) = []
+%display(index);
+newPlace = indexedPNU(1)-1; 
+if (newPlace <=0) newPlace = 1; end 
+PNUnames = get(handles.figuresListBox,'String'); 
+if ~isempty(PNUnames) 
+PNUnames(indexedPNU) = []; 
+set(handles.figuresListBox,'String',PNUnames,'value', newPlace); 
 end
 
 
@@ -415,3 +423,35 @@ function transformPushButton_Callback(hObject, eventdata, handles)
 % hObject    handle to transformPushButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+names = get(handles.figuresListBox, 'String');
+switch get(handles.operationsComboBox, 'Value')
+    case 1
+        prompt = {'Translate X:', 'Translate Y:'};
+        dlg_title = ['Translate ' names{get(handles.figuresListBox, 'Value')}];
+        num_lines =  [1 50;1 50];
+        defaultans = {'0','0'};
+        answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+    case 2
+        prompt = {'Shearing Angle: '};
+        dlg_title = ['Shear ' names{get(handles.figuresListBox, 'Value')}];
+        num_lines =  [1 50];
+        defaultans = {'0'};
+        answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+    case 3
+        prompt = {'Scale Factor: '};
+        dlg_title = ['Scale ' names{get(handles.figuresListBox, 'Value')}];
+        num_lines =  [1 50];
+        defaultans = {'1'};
+        answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+    case 4
+        prompt = {'Angle: '};
+        dlg_title = ['Rotate ' names{get(handles.figuresListBox, 'Value')}];
+        num_lines =  [1 50];
+        defaultans = {'1'};
+        answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+    case 5
+        answer = questdlg('How should the object be reflected?', ...
+        ['Reflect ' names{get(handles.figuresListBox, 'Value')}], ...
+        'Vertically','Horizontally','Cancel', 'Vertically');
+end
