@@ -142,30 +142,33 @@ dlg_title = 'Create a Parabola';
 num_lines =  [1 45;1 45; 1 45];
 defaultans = {'','',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
-%x - vertex
-a = str2double(answer(1));
-%y - intercept
-b = str2double(answer(2));
-%the power
-c = str2double(answer(3))
+if (~isempty(answer))
+    %x - vertex
+    a = str2double(answer(1));
+    
+    %y - intercept
+    b = str2double(answer(2));
+    
+    %the power
+    c = str2double(answer(3))
 
-
-% Construct a questdlg with three options
-choice = questdlg('What is the orientation', ...
-    'Orientation', ...
-	'Vertical','Horizontal','Cancel');
-% Handle response
-switch choice
-    case 'Vertical'
-        x = -100:1:100;
-        y = (c * x.^2) + (a * x) + b;
-        plot(x,y);
-    case 'Horizontal'
-        y = -100:1:100;
-        x = (c * y.^2) + (a * y) + b;
-        plot(x,y);
-    case 'Cancel' 
-end
+    % Construct a questdlg with three options
+    choice = questdlg('What is the orientation', ...
+        'Orientation', ...
+        'Vertical','Horizontal','Cancel');
+    
+    % Handle response
+    switch choice
+        case 'Vertical'
+            x = -100:1:100;
+            y = (c * x.^2) + (a * x) + b;
+            plot(x,y);
+        case 'Horizontal'
+            y = -100:1:100;
+            x = (c * y.^2) + (a * y) + b;
+            plot(x,y);
+        case 'Cancel'
+    end
 tempParabola = Parabola;
 tempParabola.xCoor = x;
 tempParabola.yCoor = y;
@@ -174,6 +177,7 @@ handles.Objects(handles.noOfObjects) = tempParabola;
 handles.inputFileNames = [handles.inputFileNames; 'Parabola',blanks(4)];
 set(handles.figuresListBox, 'string', {handles.inputFileNames});
 guidata(hObject,handles);
+end
 
 
 % --- Executes on button press in hyperbolaPushButton.
@@ -187,6 +191,7 @@ num_lines =  [1 40;1 40; 1 40; 1 40];
 defaultans = {'','','',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
 
+<<<<<<< HEAD
 % center is given by (h,k)
 % center x
 h = str2double(answer(1));
@@ -216,6 +221,39 @@ switch choice
        plot(x, posY);
        plot(x, negY);
     case 'Cancel'       
+=======
+if (~isempty(answer))
+    % center is given by (h,k)
+    % center x
+    h = str2double(answer(1));
+    % center Y
+    k = str2double(answer(2));
+    % horizontal distance
+    a = str2double(answer(3))/2;
+    % vertical distance
+    b = str2double(answer(4))/2;
+    
+    x = -100:1:100;
+    % Construct a questdlg with three options
+    choice = questdlg('What is the orientation', ...
+        'Orientation', ...
+        'Vertical','Horizontal','Cancel');
+    % Handle response
+    switch choice
+        case 'Vertical'
+           posY = sqrt((x - h).^2 * b^2 / a^2 + b^2);
+           negY = -sqrt((x - h).^2 * b^2 / a^2 + b^2);
+           plot(x, posY);
+           plot(x, negY);
+
+        case 'Horizontal'
+           posY = sqrt((x - h).^2 * b^2 / a^2 - b^2);
+           negY = -sqrt((x - h).^2 * b^2 / a^2 - b^2);
+           plot(x, posY);
+           plot(x, negY);
+        case 'Cancel'
+    end    
+>>>>>>> origin/master
 end
 tempHyperbola = Hyperbola;
 tempHyperbola.xCoor = x;
