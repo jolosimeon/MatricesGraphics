@@ -385,13 +385,7 @@ if handles.noOfObjects > 0
     handles.noOfObjects = handles.noOfObjects - 1;
 end
 
-% reset graph
-cla
-drawAxis();
-
-% readdObjects
-handles.inputFileNames = [];
-addObjects(hObject, handles);
+updateGraph(hObject, handles);
 
 Value=index-1;
 if Value<1; Value=1;end
@@ -415,7 +409,7 @@ switch get(handles.operationsComboBox, 'Value')
         defaultans = {'0','0'};
         answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
         handles.Objects(get(handles.figuresListBox,'value')).translate(str2double(answer(1)), str2double(answer(2)));
-        display(handles.Objects(get(handles.figuresListBox,'value')));
+        updateGraph(hObject, handles);
     case 2
         prompt = {'Shearing Angle: '};
         dlg_title = ['Shear ' names{get(handles.figuresListBox, 'Value')}];
@@ -423,11 +417,13 @@ switch get(handles.operationsComboBox, 'Value')
         defaultans = {'0'};
         answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
     case 3
-        prompt = {'Scale Factor: '};
+        prompt = {'Scale X: ', 'Scale Y: '};
         dlg_title = ['Scale ' names{get(handles.figuresListBox, 'Value')}];
-        num_lines =  [1 50];
-        defaultans = {'1'};
+        num_lines =  [1 50; 1 50];
+        defaultans = {'1','1'};
         answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+        handles.Objects(get(handles.figuresListBox,'value')).scale(str2double(answer(1)), str2double(answer(2));
+        updateGraph(hObject, handles);
     case 4
         prompt = {'Angle: '};
         dlg_title = ['Rotate ' names{get(handles.figuresListBox, 'Value')}];
@@ -453,7 +449,11 @@ plot(a, y,'k');
 plot(-1*a,y,'k');
 axis([-100, 100, -100, 100]);
 
-function addObjects(hObject, handles)
+function updateGraph(hObject, handles)
+% reset graph
+cla
+drawAxis();
+handles.inputFileNames = [];
 for i = 1:numel(handles.Objects)
     % redraw plots on graph
     if isa(handles.Objects(i), 'Point')
@@ -467,6 +467,14 @@ for i = 1:numel(handles.Objects)
     
     % redraw transformed
     if ~isempty(handles.Objects(i).transformedXCoor)
+        if isa(handles.Objects(i), 'Point')
+            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedYCoor, '*', 'g');
+        else
+            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedYCoor, 'g');
+        end
+        if isa(handles.Objects(i), 'Hyperbola')
+            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedYCoorNeg, 'g');
+        end
     end
     
     % readd to listbox
