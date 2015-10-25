@@ -42,12 +42,12 @@ classdef Hyperbola < Shapes
         end
         
         function reflectOverX(obj)
-            obj.reflectOverX@Shapes(obj);
+            obj.reflectOverX@Shapes();
             obj.transformedyCoorNeg = -1 .* obj.yCoorNeg;
         end
         
         function reflectOverY(obj)
-            obj.reflectOverY@Shapes(obj);
+            obj.reflectOverY@Shapes();
             obj.transformedyCoorNeg = obj.yCoorNeg;
         end
     end
