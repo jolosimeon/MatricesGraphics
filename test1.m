@@ -203,12 +203,12 @@ if (~isempty(answer))
     % Handle response
     switch choice
         case 'Vertical'
-           posY = sqrt((x - h).^2 * b^2 / a^2 + b^2);
-           negY = -sqrt((x - h).^2 * b^2 / a^2 + b^2);
+           posY = k + sqrt((x - h).^2 * b^2 / a^2 + b^2);
+           negY = k - sqrt((x - h).^2 * b^2 / a^2 + b^2);
 
         case 'Horizontal'
-           posY = sqrt((x - h).^2 * b^2 / a^2 - b^2);
-           negY = -sqrt((x - h).^2 * b^2 / a^2 - b^2);
+           posY = k + sqrt((x - h).^2 * b^2 / a^2 - b^2);
+           negY = k - sqrt((x - h).^2 * b^2 / a^2 - b^2);
            
         case 'Cancel'
     end
@@ -433,7 +433,18 @@ switch get(handles.operationsComboBox, 'Value')
     case 5
         answer = questdlg('Over which axis should the object be reflected?', ...
         ['Reflect ' names{get(handles.figuresListBox, 'Value')}], ...
-        'X-Axis','Y-Axis','Cancel', 'Vertically');
+        'X-Axis','Y-Axis','Cancel', 'X-Axis');
+        switch answer
+            case 'X-Axis'
+                handles.Objects(get(handles.figuresListBox,'value')).reflectOverX();
+                updateGraph(hObject, handles);
+
+            case 'Y-Axis'
+                handles.Objects(get(handles.figuresListBox,'value')).reflectOverY();
+                updateGraph(hObject, handles);
+
+            case 'Cancel'
+        end
 end
 guidata(hObject,handles);
 
