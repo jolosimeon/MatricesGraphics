@@ -90,14 +90,16 @@ dlg_title = 'Create a Point';
 num_lines =  [1 40;1 40];
 defaultans = {'',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
-tempPoint = Point;
-tempPoint.xCoor = str2double(answer(1));
-tempPoint.yCoor = str2double(answer(2));
-handles.noOfObjects = handles.noOfObjects + 1;
-handles.Objects(handles.noOfObjects) = tempPoint;
-updateGraph(hObject, handles);
-set(handles.figuresListBox, 'Value', handles.noOfObjects);
-guidata(hObject, handles);
+if ~isempty(answer)
+    tempPoint = Point;
+    tempPoint.xCoor = str2double(answer(1));
+    tempPoint.yCoor = str2double(answer(2));
+    handles.noOfObjects = handles.noOfObjects + 1;
+    handles.Objects(handles.noOfObjects) = tempPoint;
+    updateGraph(hObject, handles);
+    set(handles.figuresListBox, 'Value', handles.noOfObjects);
+    guidata(hObject, handles);
+end
 
 
 % --- Executes on button press in lineSegmentPushButton.
@@ -110,36 +112,35 @@ dlg_title = 'Create a Line Segment';
 num_lines =  [1 50;1 50; 1 50; 1 50];
 defaultans = {'','','',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
-x = str2double([answer(1),answer(3)]);
-y = str2double([answer(2),answer(4)]);
-tempLineSegment = LineSegment;
-tempLineSegment.xCoor = x;
-tempLineSegment.yCoor = y;
-handles.noOfObjects = handles.noOfObjects + 1;
-handles.Objects(handles.noOfObjects) = tempLineSegment;
-updateGraph(hObject, handles);
-set(handles.figuresListBox, 'Value', handles.noOfObjects);
-guidata(hObject, handles);
+if ~isempty(answer)
+    x = str2double([answer(1),answer(3)]);
+    y = str2double([answer(2),answer(4)]);
+    tempLineSegment = LineSegment;
+    tempLineSegment.xCoor = x;
+    tempLineSegment.yCoor = y;
+    handles.noOfObjects = handles.noOfObjects + 1;
+    handles.Objects(handles.noOfObjects) = tempLineSegment;
+    updateGraph(hObject, handles);
+    set(handles.figuresListBox, 'Value', handles.noOfObjects);
+    guidata(hObject, handles);
+end
 
 % --- Executes on button press in parabolaPushButton.
 function parabolaPushButton_Callback(hObject, eventdata, handles)
 % hObject    handle to parabolaPushButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-prompt = {'Vertex X-coordinate','Vertex Y-coordinate','Magnitude'};
+prompt = {'Vertex X-coordinate','Vertex Y-coordinate','Distance between Vertex and Focus (p)'};
 dlg_title = 'Create a Parabola';
 num_lines =  [1 45;1 45; 1 45];
 defaultans = {'','',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
 if ~isempty(answer)
-    %x - vertex
-    a = str2double(answer(1));
+    h = str2double(answer(1));
     
-    %y - intercept
-    b = str2double(answer(2));
+    k = str2double(answer(2));
     
-    %the power
-    c = str2double(answer(3))
+    p = str2double(answer(3))
 
     % Construct a questdlg with three options
     choice = questdlg('What is the orientation', ...
@@ -149,11 +150,12 @@ if ~isempty(answer)
     % Handle response
     switch choice
         case 'Vertical'
-            x = -100:1:100;       
-            y = (c * x.^2) + (a * x) + b;    
+            x = -100:1:100;
+            y = (x - h).^2 /(4 * p) + k;          
+               
         case 'Horizontal'
             y = -100:1:100;
-            x = (c * y.^2) + (a * y) + b;
+            x = (y - k).^2 /(4 * p) + h;
         case 'Cancel'
     end
     
@@ -245,29 +247,31 @@ dlg_title = 'Create a Polygon';
 num_lines =  [1 40];
 defaultans = {'3'};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
-x = zeros(1, str2double(answer) + 1);
-y = zeros(1, str2double(answer) + 1);
+if ~isempty(answer)
+    x = zeros(1, str2double(answer) + 1);
+    y = zeros(1, str2double(answer) + 1);
 
-for a = 1:str2double(answer) 
-    prompt = {'X-coordinate','Y-coordinate'};
-    dlg_title = 'Create a Polygon';
-    num_lines =  [1 40;1 40];
-    defaultans = {'',''};
-    answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
-    x(a) = str2double(answer(1));
-    y(a) = str2double(answer(2));
+    for a = 1:str2double(answer) 
+        prompt = {'X-coordinate','Y-coordinate'};
+        dlg_title = 'Create a Polygon';
+        num_lines =  [1 40;1 40];
+        defaultans = {'',''};
+        answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+        x(a) = str2double(answer(1));
+        y(a) = str2double(answer(2));
+    end
+
+    x(size(x)) = x(1);
+    y(size(y)) = y(1);
+    tempPolygon = Polygon;
+    tempPolygon.xCoor = x;
+    tempPolygon.yCoor = y;
+    handles.noOfObjects = handles.noOfObjects + 1;
+    handles.Objects(handles.noOfObjects) = tempPolygon;
+    updateGraph(hObject, handles);
+    set(handles.figuresListBox, 'Value', handles.noOfObjects);
+    guidata(hObject,handles);
 end
-
-x(size(x)) = x(1);
-y(size(y)) = y(1);
-tempPolygon = Polygon;
-tempPolygon.xCoor = x;
-tempPolygon.yCoor = y;
-handles.noOfObjects = handles.noOfObjects + 1;
-handles.Objects(handles.noOfObjects) = tempPolygon;
-updateGraph(hObject, handles);
-set(handles.figuresListBox, 'Value', handles.noOfObjects);
-guidata(hObject,handles);
 
 % --- Executes on button press in ellipsePushButton.
 function ellipsePushButton_Callback(hObject, eventdata, handles)
@@ -280,29 +284,31 @@ num_lines =  [1 40;1 40; 1 40; 1 40];
 defaultans = {'','','',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
 
-% center is given by (h,k)
-% center x
-h = str2double(answer(1));
-% center Y
-k = str2double(answer(2));
-% horizontal distance
-a = str2double(answer(3))/2;
-% vertical distance
-b = str2double(answer(4))/2;
+if ~isempty(answer)
+    % center is given by (h,k)
+    % center x
+    h = str2double(answer(1));
+    % center Y
+    k = str2double(answer(2));
+    % horizontal distance
+    a = str2double(answer(3))/2;
+    % vertical distance
+    b = str2double(answer(4))/2;
 
-%copy paste from net do not question pls
-t=-pi:0.01:pi;
-x=h+a*cos(t);
-y=k+b*sin(t);
+    %copy paste from net do not question pls
+    t=-pi:0.01:pi;
+    x=h+a*cos(t);
+    y=k+b*sin(t);
 
-tempEllipse = Ellipse;
-tempEllipse.xCoor = x;
-tempEllipse.yCoor = y;
-handles.noOfObjects = handles.noOfObjects + 1;
-handles.Objects(handles.noOfObjects) = tempEllipse;
-updateGraph(hObject, handles);
-set(handles.figuresListBox, 'Value', handles.noOfObjects);
-guidata(hObject, handles);
+    tempEllipse = Ellipse;
+    tempEllipse.xCoor = x;
+    tempEllipse.yCoor = y;
+    handles.noOfObjects = handles.noOfObjects + 1;
+    handles.Objects(handles.noOfObjects) = tempEllipse;
+    updateGraph(hObject, handles);
+    set(handles.figuresListBox, 'Value', handles.noOfObjects);
+    guidata(hObject, handles);
+end
 
 
 % --- Executes on button press in vectorPushButton.
@@ -315,17 +321,18 @@ dlg_title = 'Create a Vector';
 num_lines =  [1 40;1 40];
 defaultans = {'',''};
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
-x = [0,str2double(answer(1))];
-y = [0,str2double(answer(2))];
-tempVector = Vector;
-tempVector.xCoor = x;
-tempVector.yCoor = y;
-handles.noOfObjects = handles.noOfObjects + 1;
-handles.Objects(handles.noOfObjects) = tempVector;
-updateGraph(hObject, handles);
-set(handles.figuresListBox, 'Value', handles.noOfObjects);
-guidata(hObject,handles);
-
+if ~isempty(answer)
+    x = [0,str2double(answer(1))];
+    y = [0,str2double(answer(2))];
+    tempVector = Vector;
+    tempVector.xCoor = x;
+    tempVector.yCoor = y;
+    handles.noOfObjects = handles.noOfObjects + 1;
+    handles.Objects(handles.noOfObjects) = tempVector;
+    updateGraph(hObject, handles);
+    set(handles.figuresListBox, 'Value', handles.noOfObjects);
+    guidata(hObject,handles);
+end
 
 
 % --- Executes on selection change in operationsComboBox.
