@@ -57,7 +57,7 @@ handles.output = hObject;
 handles.noOfObjects = 0;
 handles.Objects = Shapes.empty;
 handles.inputFileNames = [];
-handles.currentFigure = Shapes;
+handles.currentFigure = 0;
 % Update handles structure
 guidata(hObject, handles);
 
@@ -97,7 +97,7 @@ tempPoint.handle = plot(tempPoint.xCoor, tempPoint.yCoor, '*');
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempPoint;
 handles.inputFileNames = [handles.inputFileNames; 'Point',blanks(7)];
-set(handles.figuresListBox, 'string', {handles.inputFileNames});
+set(handles.figuresListBox, 'string', {handles.inputFileNames}, 'Value', handles.noOfObjects);
 guidata(hObject, handles);
 
 
@@ -120,7 +120,7 @@ tempLineSegment.handle = plot(x, y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempLineSegment;
 handles.inputFileNames = [handles.inputFileNames; 'Line Segment'];
-set(handles.figuresListBox, 'string', {handles.inputFileNames});
+set(handles.figuresListBox, 'string', {handles.inputFileNames}, 'Value', handles.noOfObjects);
 guidata(hObject, handles);
 
 % --- Executes on button press in parabolaPushButton.
@@ -167,7 +167,7 @@ if ~isempty(answer)
         handles.noOfObjects = handles.noOfObjects + 1;
         handles.Objects(handles.noOfObjects) = tempParabola;
         handles.inputFileNames = [handles.inputFileNames; 'Parabola',blanks(4)];
-        set(handles.figuresListBox, 'string', {handles.inputFileNames});
+        set(handles.figuresListBox, 'string', {handles.inputFileNames}, 'Value', handles.noOfObjects);
         guidata(hObject,handles);
     end
 end
@@ -223,7 +223,7 @@ if (~isempty(answer))
         handles.noOfObjects = handles.noOfObjects + 1;
         handles.Objects(handles.noOfObjects) = tempHyperbola;
         handles.inputFileNames = [handles.inputFileNames; 'Hyperbola',blanks(3)];
-        set(handles.figuresListBox, 'string', {handles.inputFileNames});
+        set(handles.figuresListBox, 'string', {handles.inputFileNames}, 'Value', handles.noOfObjects);
         guidata(hObject, handles);
     end
 end
@@ -262,7 +262,7 @@ tempPolgyon.handle = h1;
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempPolygon;
 handles.inputFileNames = [handles.inputFileNames; 'Polygon',blanks(5)];
-set(handles.figuresListBox, 'string', {handles.inputFileNames});
+set(handles.figuresListBox, 'string', {handles.inputFileNames}, 'Value', handles.noOfObjects);
 guidata(hObject,handles);
 
 % --- Executes on button press in ellipsePushButton.
@@ -298,7 +298,7 @@ tempEllipse.handle = plot(x,y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempEllipse;
 handles.inputFileNames = [handles.inputFileNames; 'Ellipse',blanks(5)];
-set(handles.figuresListBox, 'string', {handles.inputFileNames});
+set(handles.figuresListBox, 'string', {handles.inputFileNames}, 'Value', handles.noOfObjects);
 guidata(hObject, handles);
 
 
@@ -321,7 +321,7 @@ tempVector.handle = plot(x,y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempVector;
 handles.inputFileNames = [handles.inputFileNames; 'Vector',blanks(6)];
-set(handles.figuresListBox, 'string', {handles.inputFileNames});
+set(handles.figuresListBox, 'string', {handles.inputFileNames}, 'Value', handles.noOfObjects);
 guidata(hObject,handles);
 
 
