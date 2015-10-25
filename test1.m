@@ -93,11 +93,10 @@ answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
 tempPoint = Point;
 tempPoint.xCoor = str2double(answer(1));
 tempPoint.yCoor = str2double(answer(2));
-plot(tempPoint.xCoor, tempPoint.yCoor, '*');
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempPoint;
-handles.inputFileNames = [handles.inputFileNames; 'Point',blanks(7)];
-set(handles.figuresListBox, 'string', {handles.inputFileNames}, 'Value', handles.noOfObjects);
+updateGraph(hObject, handles);
+set(handles.figuresListBox, 'Value', handles.noOfObjects);
 guidata(hObject, handles);
 
 
@@ -116,11 +115,10 @@ y = str2double([answer(2),answer(4)]);
 tempLineSegment = LineSegment;
 tempLineSegment.xCoor = x;
 tempLineSegment.yCoor = y;
-plot(x, y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempLineSegment;
-handles.inputFileNames = [handles.inputFileNames; 'Line Segment'];
-set(handles.figuresListBox, 'string', {handles.inputFileNames}, 'Value', handles.noOfObjects);
+updateGraph(hObject, handles);
+set(handles.figuresListBox, 'Value', handles.noOfObjects);
 guidata(hObject, handles);
 
 % --- Executes on button press in parabolaPushButton.
@@ -166,8 +164,8 @@ if ~isempty(answer)
         plot(x,y);
         handles.noOfObjects = handles.noOfObjects + 1;
         handles.Objects(handles.noOfObjects) = tempParabola;
-        handles.inputFileNames = [handles.inputFileNames; 'Parabola',blanks(4)];
-        set(handles.figuresListBox, 'string', {handles.inputFileNames}, 'Value', handles.noOfObjects);
+        updateGraph(hObject, handles);
+        set(handles.figuresListBox, 'Value', handles.noOfObjects);
         guidata(hObject,handles);
     end
 end
@@ -203,12 +201,12 @@ if (~isempty(answer))
     % Handle response
     switch choice
         case 'Vertical'
-           posY = sqrt((x - h).^2 * b^2 / a^2 + b^2);
-           negY = -sqrt((x - h).^2 * b^2 / a^2 + b^2);
+           posY = k + sqrt((x - h).^2 * b^2 / a^2 + b^2);
+           negY = k - sqrt((x - h).^2 * b^2 / a^2 + b^2);
 
         case 'Horizontal'
-           posY = sqrt((x - h).^2 * b^2 / a^2 - b^2);
-           negY = -sqrt((x - h).^2 * b^2 / a^2 - b^2);
+           posY = k + sqrt((x - h).^2 * b^2 / a^2 - b^2);
+           negY = k - sqrt((x - h).^2 * b^2 / a^2 - b^2);
            
         case 'Cancel'
     end
@@ -222,8 +220,8 @@ if (~isempty(answer))
         plot(x, negY);
         handles.noOfObjects = handles.noOfObjects + 1;
         handles.Objects(handles.noOfObjects) = tempHyperbola;
-        handles.inputFileNames = [handles.inputFileNames; 'Hyperbola',blanks(3)];
-        set(handles.figuresListBox, 'string', {handles.inputFileNames}, 'Value', handles.noOfObjects);
+        updateGraph(hObject, handles);
+        set(handles.figuresListBox, 'Value', handles.noOfObjects);
         guidata(hObject, handles);
     end
 end
@@ -260,8 +258,8 @@ tempPolygon.yCoor = y;
 plot(x, y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempPolygon;
-handles.inputFileNames = [handles.inputFileNames; 'Polygon',blanks(5)];
-set(handles.figuresListBox, 'string', {handles.inputFileNames}, 'Value', handles.noOfObjects);
+updateGraph(hObject, handles);
+set(handles.figuresListBox, 'Value', handles.noOfObjects);
 guidata(hObject,handles);
 
 % --- Executes on button press in ellipsePushButton.
@@ -296,8 +294,8 @@ tempEllipse.yCoor = y;
 plot(x,y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempEllipse;
-handles.inputFileNames = [handles.inputFileNames; 'Ellipse',blanks(5)];
-set(handles.figuresListBox, 'string', {handles.inputFileNames}, 'Value', handles.noOfObjects);
+updateGraph(hObject, handles);
+set(handles.figuresListBox, 'Value', handles.noOfObjects);
 guidata(hObject, handles);
 
 
@@ -319,8 +317,8 @@ tempVector.yCoor = y;
 plot(x,y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempVector;
-handles.inputFileNames = [handles.inputFileNames; 'Vector',blanks(6)];
-set(handles.figuresListBox, 'string', {handles.inputFileNames}, 'Value', handles.noOfObjects);
+updateGraph(hObject, handles);
+set(handles.figuresListBox, 'Value', handles.noOfObjects);
 guidata(hObject,handles);
 
 
@@ -411,11 +409,13 @@ switch get(handles.operationsComboBox, 'Value')
         handles.Objects(get(handles.figuresListBox,'value')).translate(str2double(answer(1)), str2double(answer(2)));
         updateGraph(hObject, handles);
     case 2
-        prompt = {'Shearing Angle: '};
+        prompt = {'Shearing Angle: Clockwise'};
         dlg_title = ['Shear ' names{get(handles.figuresListBox, 'Value')}];
         num_lines =  [1 50];
         defaultans = {'0'};
         answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+        handles.Objects(get(handles.figuresListBox,'value')).shear(str2double(answer(1)));
+        updateGraph(hObject,handles);
     case 3
         prompt = {'Scale X: ', 'Scale Y: '};
         dlg_title = ['Scale ' names{get(handles.figuresListBox, 'Value')}];
@@ -435,7 +435,18 @@ switch get(handles.operationsComboBox, 'Value')
     case 5
         answer = questdlg('Over which axis should the object be reflected?', ...
         ['Reflect ' names{get(handles.figuresListBox, 'Value')}], ...
-        'X-Axis','Y-Axis','Cancel', 'Vertically');
+        'X-Axis','Y-Axis','Cancel', 'X-Axis');
+        switch answer
+            case 'X-Axis'
+                handles.Objects(get(handles.figuresListBox,'value')).reflectOverX();
+                updateGraph(hObject, handles);
+
+            case 'Y-Axis'
+                handles.Objects(get(handles.figuresListBox,'value')).reflectOverY();
+                updateGraph(hObject, handles);
+
+            case 'Cancel'
+        end
 end
 guidata(hObject,handles);
 
@@ -470,7 +481,7 @@ for i = 1:numel(handles.Objects)
     % redraw transformed
     if ~isempty(handles.Objects(i).transformedXCoor)
         if isa(handles.Objects(i), 'Point')
-            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedYCoor, '*', 'g');
+            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedYCoor, 'g*');
         else
             plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedYCoor, 'g');
         end
