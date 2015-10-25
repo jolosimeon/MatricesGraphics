@@ -96,8 +96,8 @@ if ~isempty(answer)
     tempPoint.yCoor = str2double(answer(2));
     handles.noOfObjects = handles.noOfObjects + 1;
     handles.Objects(handles.noOfObjects) = tempPoint;
+    handles.currentFigure = handles.noOfObjects;
     updateGraph(hObject, handles);
-    set(handles.figuresListBox, 'Value', handles.noOfObjects);
     guidata(hObject, handles);
 end
 
@@ -120,8 +120,8 @@ if ~isempty(answer)
     tempLineSegment.yCoor = y;
     handles.noOfObjects = handles.noOfObjects + 1;
     handles.Objects(handles.noOfObjects) = tempLineSegment;
+    handles.currentFigure = handles.noOfObjects;
     updateGraph(hObject, handles);
-    set(handles.figuresListBox, 'Value', handles.noOfObjects);
     guidata(hObject, handles);
 end
 
@@ -165,8 +165,8 @@ if ~isempty(answer)
         tempParabola.yCoor = y;
         handles.noOfObjects = handles.noOfObjects + 1;
         handles.Objects(handles.noOfObjects) = tempParabola;
+        handles.currentFigure = handles.noOfObjects;
         updateGraph(hObject, handles);
-        set(handles.figuresListBox, 'Value', handles.noOfObjects);
         guidata(hObject,handles);
     end
 end
@@ -230,8 +230,8 @@ if (~isempty(answer))
         tempHyperbola.yCoor2 = y2;
         handles.noOfObjects = handles.noOfObjects + 1;
         handles.Objects(handles.noOfObjects) = tempHyperbola;
+        handles.currentFigure = handles.noOfObjects;
         updateGraph(hObject, handles);
-        set(handles.figuresListBox, 'Value', handles.noOfObjects);
         guidata(hObject, handles);
     end
 end
@@ -268,8 +268,8 @@ if ~isempty(answer)
     tempPolygon.yCoor = y;
     handles.noOfObjects = handles.noOfObjects + 1;
     handles.Objects(handles.noOfObjects) = tempPolygon;
+    handles.currentFigure = handles.noOfObjects;
     updateGraph(hObject, handles);
-    set(handles.figuresListBox, 'Value', handles.noOfObjects);
     guidata(hObject,handles);
 end
 
@@ -305,8 +305,8 @@ if ~isempty(answer)
     tempEllipse.yCoor = y;
     handles.noOfObjects = handles.noOfObjects + 1;
     handles.Objects(handles.noOfObjects) = tempEllipse;
+    handles.currentFigure = handles.noOfObjects;
     updateGraph(hObject, handles);
-    set(handles.figuresListBox, 'Value', handles.noOfObjects);
     guidata(hObject, handles);
 end
 
@@ -329,8 +329,8 @@ if ~isempty(answer)
     tempVector.yCoor = y;
     handles.noOfObjects = handles.noOfObjects + 1;
     handles.Objects(handles.noOfObjects) = tempVector;
+    handles.currentFigure = handles.noOfObjects;
     updateGraph(hObject, handles);
-    set(handles.figuresListBox, 'Value', handles.noOfObjects);
     guidata(hObject,handles);
 end
 
@@ -366,7 +366,9 @@ function figuresListBox_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns figuresListBox contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from figuresListBox
-
+handles.currentFigure = get(handles.figuresListBox,'value');
+updateGraph(hObject, handles);
+guidata(hObject,handles);
 
 % --- Executes during object creation, after setting all properties.
 function figuresListBox_CreateFcn(hObject, eventdata, handles)
@@ -480,31 +482,40 @@ cla
 drawAxis();
 handles.inputFileNames = [];
 for i = 1:numel(handles.Objects)
+    
+    if i == handles.currentFigure
+        normal = 'r';
+        transformed = 'g';
+    else
+        normal = 'b';
+        transformed = 'c';
+    end
+    
     % redraw plots on graph
     if isa(handles.Objects(i), 'Point')
-        plot(handles.Objects(i).xCoor, handles.Objects(i).yCoor, '*');
+        plot(handles.Objects(i).xCoor, handles.Objects(i).yCoor, [normal '*']);
     else
-        plot(handles.Objects(i).xCoor, handles.Objects(i).yCoor);
+        plot(handles.Objects(i).xCoor, handles.Objects(i).yCoor, normal);
     end
     if isa(handles.Objects(i), 'Hyperbola')
-        plot(handles.Objects(i).xCoor2, handles.Objects(i).yCoor2);
+        plot(handles.Objects(i).xCoor2, handles.Objects(i).yCoor2, normal);
     end
     
     % redraw transformed
     if ~isempty(handles.Objects(i).transformedXCoor)
         if isa(handles.Objects(i), 'Point')
-            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedYCoor, 'g*');
+            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedYCoor, [transformed '*']);
         else
-            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedYCoor, 'g');
+            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedYCoor, transformed);
         end
         if isa(handles.Objects(i), 'Hyperbola')
-            plot(handles.Objects(i).transformedXCoor2, handles.Objects(i).transformedYCoor2, 'g');
+            plot(handles.Objects(i).transformedXCoor2, handles.Objects(i).transformedYCoor2, transformed);
         end
     end
     
     % readd to listbox
     handles.inputFileNames = [handles.inputFileNames; class(handles.Objects(i)), blanks(12 - length(class(handles.Objects(i))))];
 end
-set(handles.figuresListBox, 'string', {handles.inputFileNames});
+set(handles.figuresListBox, 'string', {handles.inputFileNames}, 'Value', handles.currentFigure);
 guidata(hObject,handles);
 
