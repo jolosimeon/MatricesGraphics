@@ -415,6 +415,8 @@ switch get(handles.operationsComboBox, 'Value')
         num_lines =  [1 50;1 50];
         defaultans = {'0','0'};
         answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+        handles.Objects(get(handles.figuresListBox,'value')).translate(str2double(answer(1)), str2double(answer(2)));
+        display(handles.Objects(get(handles.figuresListBox,'value')));
     case 2
         prompt = {'Shearing Angle: '};
         dlg_title = ['Shear ' names{get(handles.figuresListBox, 'Value')}];
@@ -434,10 +436,11 @@ switch get(handles.operationsComboBox, 'Value')
         defaultans = {'1'};
         answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
     case 5
-        answer = questdlg('How should the object be reflected?', ...
+        answer = questdlg('Over which axis should the object be reflected?', ...
         ['Reflect ' names{get(handles.figuresListBox, 'Value')}], ...
-        'Vertically','Horizontally','Cancel', 'Vertically');
+        'X-Axis','Y-Axis','Cancel', 'Vertically');
 end
+guidata(hObject,handles);
 
 function drawAxis()
 a = [0, 0];
