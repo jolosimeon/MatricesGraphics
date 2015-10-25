@@ -24,6 +24,15 @@ classdef Shapes < matlab.mixin.Heterogeneous & handle
         end
         
         function rotate(obj, angle)
+            delta = angle;
+            delta = delta/ 180 * pi;
+            whole_matrix = [cos(delta), sin(delta);
+                            -sin(delta), cos(delta)];
+            tempMatrix = [obj.xCoor;
+                          obj.yCoor];
+           tempMatrix = whole_matrix * tempMatrix;
+            obj.transformedXCoor = tempMatrix(1,:);
+            obj.transformedYCoor = tempMatrix(2,:);
         end
         
         function reflectOverX(obj)

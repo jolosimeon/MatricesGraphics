@@ -430,6 +430,8 @@ switch get(handles.operationsComboBox, 'Value')
         num_lines =  [1 50];
         defaultans = {'1'};
         answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+        handles.Objects(get(handles.figuresListBox,'value')).rotate(str2double(answer(1)));
+        updateGraph(hObject, handles)
     case 5
         answer = questdlg('Over which axis should the object be reflected?', ...
         ['Reflect ' names{get(handles.figuresListBox, 'Value')}], ...
