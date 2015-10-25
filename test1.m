@@ -161,7 +161,6 @@ if ~isempty(answer)
         tempParabola = Parabola;
         tempParabola.xCoor = x;
         tempParabola.yCoor = y;
-        plot(x,y);
         handles.noOfObjects = handles.noOfObjects + 1;
         handles.Objects(handles.noOfObjects) = tempParabola;
         updateGraph(hObject, handles);
@@ -192,32 +191,41 @@ if (~isempty(answer))
     a = str2double(answer(3))/2;
     % vertical distance
     b = str2double(answer(4))/2;
-    
-    x = -100:1:100;
+
     % Construct a questdlg with three options
     choice = questdlg('What is the orientation', ...
         'Orientation', ...
         'Vertical','Horizontal','Cancel');
     % Handle response
     switch choice
+        % copy paste from net do not question pls
         case 'Vertical'
-           posY = k + sqrt((x - h).^2 * b^2 / a^2 + b^2);
-           negY = k - sqrt((x - h).^2 * b^2 / a^2 + b^2);
+            t = linspace(-2*pi,2*pi, 200);
+            x1 = h + b*sinh(t);
+            y1 = k + a*cosh(t);
+            plot(x1,y1);
+            x2 = x1;
+            y2 = k - a*cosh(t);
+            plot(x2,y2);
 
         case 'Horizontal'
-           posY = k + sqrt((x - h).^2 * b^2 / a^2 - b^2);
-           negY = k - sqrt((x - h).^2 * b^2 / a^2 - b^2);
+            t = linspace(-2*pi,2*pi, 200);
+            x1 = h + a*cosh(t);
+            y1 = k + b*sinh(t);
+            plot(x1,y1);
+            x2 = h - a*cosh(t);
+            y2 = y1;
+            plot(x2,y2);
            
         case 'Cancel'
     end
     
-    if ~isempty(posY)
+    if ~isempty(choice)
         tempHyperbola = Hyperbola;
-        tempHyperbola.xCoor = x;
-        tempHyperbola.yCoorNeg = negY;
-        tempHyperbola.yCoor = posY;
-        plot(x, posY);
-        plot(x, negY);
+        tempHyperbola.xCoor = x1;
+        tempHyperbola.yCoor = y1;
+        tempHyperbola.xCoor2 = x2;
+        tempHyperbola.yCoor2 = y2;
         handles.noOfObjects = handles.noOfObjects + 1;
         handles.Objects(handles.noOfObjects) = tempHyperbola;
         updateGraph(hObject, handles);
@@ -255,7 +263,6 @@ y(size(y)) = y(1);
 tempPolygon = Polygon;
 tempPolygon.xCoor = x;
 tempPolygon.yCoor = y;
-plot(x, y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempPolygon;
 updateGraph(hObject, handles);
@@ -291,7 +298,6 @@ y=k+b*sin(t);
 tempEllipse = Ellipse;
 tempEllipse.xCoor = x;
 tempEllipse.yCoor = y;
-plot(x,y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempEllipse;
 updateGraph(hObject, handles);
@@ -314,7 +320,6 @@ y = [0,str2double(answer(2))];
 tempVector = Vector;
 tempVector.xCoor = x;
 tempVector.yCoor = y;
-plot(x,y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempVector;
 updateGraph(hObject, handles);
@@ -475,7 +480,7 @@ for i = 1:numel(handles.Objects)
         plot(handles.Objects(i).xCoor, handles.Objects(i).yCoor);
     end
     if isa(handles.Objects(i), 'Hyperbola')
-        plot(handles.Objects(i).xCoor, handles.Objects(i).yCoorNeg);
+        plot(handles.Objects(i).xCoor2, handles.Objects(i).yCoor2);
     end
     
     % redraw transformed
@@ -486,7 +491,7 @@ for i = 1:numel(handles.Objects)
             plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedYCoor, 'g');
         end
         if isa(handles.Objects(i), 'Hyperbola')
-            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedyCoorNeg, 'g');
+            plot(handles.Objects(i).transformedXCoor2, handles.Objects(i).transformedYCoor2, 'g');
         end
     end
     

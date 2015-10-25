@@ -3,14 +3,17 @@ classdef Hyperbola < Shapes
     %   Detailed explanation goes here
     
     properties
-        yCoorNeg
-        transformedyCoorNeg
+        xCoor2
+        yCoor2
+        transformedXCoor2
+        transformedYCoor2
     end
     
     methods
         function translate(obj, x, y)
             obj.translate@Shapes(x,y);
-            obj.transformedyCoorNeg = obj.yCoorNeg + y;
+            obj.transformedXCoor2 = obj.xCoor2 + x;
+            obj.transformedYCoor2 = obj.yCoor2 + y; 
         end
         
         function shear(obj, angle)
@@ -18,15 +21,17 @@ classdef Hyperbola < Shapes
             angle = angle/180 * pi;
             x_shear_matrix = [1, tan(angle);
                               0, 1];
-            tempMatrix = [obj.xCoor;
-                          obj.yCoorNeg];
+            tempMatrix = [obj.xCoor2;
+                          obj.yCoor2];
             tempMatrix = x_shear_matrix * tempMatrix;
-            obj.transformedyCoorNeg = tempMatrix(2,:);
+            obj.transformedXCoor2 = tempMatrix(1,:);
+            obj.transformedYCoor2 = tempMatrix(2,:);
         end
         
         function scale(obj, x, y)
             obj.scale@Shapes(x,y);
-            obj.transformedyCoorNeg = obj.yCoorNeg * y;
+            obj.transformedXCoor2 = obj.xCoor2 * x;
+            obj.transformedYCoor2 = obj.yCoor2 * y;
         end
         
         function rotate(obj, angle)
@@ -35,20 +40,23 @@ classdef Hyperbola < Shapes
             delta = delta/ 180 * pi;
             whole_matrix = [cos(delta), sin(delta);
                             -sin(delta), cos(delta)];
-            tempMatrix = [obj.xCoor;
-                          obj.yCoorNeg];
+            tempMatrix = [obj.xCoor2;
+                          obj.yCoor2];
             tempMatrix = whole_matrix * tempMatrix;
-            obj.transformedyCoorNeg = tempMatrix(2,:);
+            obj.transformedXCoor2 = tempMatrix(1,:);
+            obj.transformedYCoor2 = tempMatrix(2,:);
         end
         
         function reflectOverX(obj)
             obj.reflectOverX@Shapes();
-            obj.transformedyCoorNeg = -1 .* obj.yCoorNeg;
+            obj.transformedXCoor2 = obj.xCoor2;
+            obj.transformedYCoor2 = -1 .* obj.yCoor2;
         end
         
         function reflectOverY(obj)
             obj.reflectOverY@Shapes();
-            obj.transformedyCoorNeg = obj.yCoorNeg;
+            obj.transformedXCoor2 = -1 * obj.xCoor2;
+            obj.transformedYCoor2 = obj.yCoor2;
         end
     end
     
