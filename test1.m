@@ -411,11 +411,13 @@ switch get(handles.operationsComboBox, 'Value')
         handles.Objects(get(handles.figuresListBox,'value')).translate(str2double(answer(1)), str2double(answer(2)));
         updateGraph(hObject, handles);
     case 2
-        prompt = {'Shearing Angle: '};
+        prompt = {'Shearing Angle: Clockwise'};
         dlg_title = ['Shear ' names{get(handles.figuresListBox, 'Value')}];
         num_lines =  [1 50];
         defaultans = {'0'};
         answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+        handles.Objects(get(handles.figuresListBox,'value')).shear(str2double(answer(1)));
+        updateGraph(hObject,handles);
     case 3
         prompt = {'Scale X: ', 'Scale Y: '};
         dlg_title = ['Scale ' names{get(handles.figuresListBox, 'Value')}];
