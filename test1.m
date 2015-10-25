@@ -66,8 +66,7 @@ guidata(hObject, handles);
 
 % Draw X and Y axis%
 drawAxis();
-set(handles.originalValue,'string','')
-set(handles.transformedValue,'string','')
+
 
 
 % --- Outputs from this function are returned to the command line.
@@ -98,7 +97,6 @@ handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempPoint;
 updateGraph(hObject, handles);
 set(handles.figuresListBox, 'Value', handles.noOfObjects);
-set(handles.originalValue,'string',['X = ' tempPoint.xCoor ' Y = ' tempPoint.yCoor ]);
 guidata(hObject, handles);
 
 
