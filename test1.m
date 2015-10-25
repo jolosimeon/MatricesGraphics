@@ -397,10 +397,14 @@ if handles.noOfObjects > 0
     handles.noOfObjects = handles.noOfObjects - 1;
 end
 
-updateGraph(hObject, handles);
-
 Value=index-1;
-if Value<1; Value=1;end
+handles.currentFigure = handles.currentFigure - 1;
+if Value<1
+    Value=1;
+    handles.currentFigure = 0;
+end
+
+updateGraph(hObject, handles);
 
 set(handles.figuresListBox,'Value',Value);
 guidata(hObject,handles);
@@ -519,35 +523,37 @@ end
 set(handles.figuresListBox, 'string', {handles.inputFileNames}, 'Value', handles.currentFigure);
 index = get(handles.figuresListBox,'value');
 newData = get(handles.resultsTable, 'Data');
-if isa(handles.Objects(index), 'Hyperbola')
-    if isempty(handles.Objects(index).transformedXCoor)
-        newData = [
-            {'X Coordinates  '}, num2cell(handles.Objects(index).xCoor);
-            {'Y Coordinates  '}, num2cell(handles.Objects(index).yCoor);
-            {'X Coordinates 2'}, num2cell(handles.Objects(index).xCoor2);
-            {'Y Coordinates 2'}, num2cell(handles.Objects(index).yCoor2)];
+if index > 0
+    if isa(handles.Objects(index), 'Hyperbola')
+        if isempty(handles.Objects(index).transformedXCoor)
+            newData = [
+                {'X Coordinates  '}, num2cell(handles.Objects(index).xCoor);
+                {'Y Coordinates  '}, num2cell(handles.Objects(index).yCoor);
+                {'X Coordinates 2'}, num2cell(handles.Objects(index).xCoor2);
+                {'Y Coordinates 2'}, num2cell(handles.Objects(index).yCoor2)];
+        else
+            newData = [
+                {'X Coordinates         '}, num2cell(handles.Objects(index).xCoor);
+                {'Y Coordinates         '}, num2cell(handles.Objects(index).yCoor);
+                {'Transformed X Coords  '}, num2cell(handles.Objects(index).transformedXCoor);
+                {'Transformed Y Coords  '}, num2cell(handles.Objects(index).transformedYCoor);
+                {'X Coordinates 2       '}, num2cell(handles.Objects(index).xCoor2);
+                {'Y Coordinates 2       '}, num2cell(handles.Objects(index).yCoor2);
+                {'Transformed X Coords 2'}, num2cell(handles.Objects(index).transformedXCoor2);
+                {'Transformed Y Coords 2'}, num2cell(handles.Objects(index).transformedYCoor2)];
+        end
     else
-        newData = [
-            {'X Coordinates         '}, num2cell(handles.Objects(index).xCoor);
-            {'Y Coordinates         '}, num2cell(handles.Objects(index).yCoor);
-            {'Transformed X Coords  '}, num2cell(handles.Objects(index).transformedXCoor);
-            {'Transformed Y Coords  '}, num2cell(handles.Objects(index).transformedYCoor);
-            {'X Coordinates 2       '}, num2cell(handles.Objects(index).xCoor2);
-            {'Y Coordinates 2       '}, num2cell(handles.Objects(index).yCoor2);
-            {'Transformed X Coords 2'}, num2cell(handles.Objects(index).transformedXCoor2);
-            {'Transformed Y Coords 2'}, num2cell(handles.Objects(index).transformedYCoor2)];
-    end
-else
-    if isempty(handles.Objects(index).transformedXCoor)
-        newData = [
-            {'X Coordinates'}, num2cell(handles.Objects(index).xCoor);
-            {'Y Coordinates'}, num2cell(handles.Objects(index).yCoor)];
-    else
-        newData = [
-            {'X Coordinates       '}, num2cell(handles.Objects(index).xCoor);
-            {'Y Coordinates       '}, num2cell(handles.Objects(index).yCoor);
-            {'Transformed X Coords'}, num2cell(handles.Objects(index).transformedXCoor);
-            {'Transformed Y Coords'}, num2cell(handles.Objects(index).transformedYCoor)];
+        if isempty(handles.Objects(index).transformedXCoor)
+            newData = [
+                {'X Coordinates'}, num2cell(handles.Objects(index).xCoor);
+                {'Y Coordinates'}, num2cell(handles.Objects(index).yCoor)];
+        else
+            newData = [
+                {'X Coordinates       '}, num2cell(handles.Objects(index).xCoor);
+                {'Y Coordinates       '}, num2cell(handles.Objects(index).yCoor);
+                {'Transformed X Coords'}, num2cell(handles.Objects(index).transformedXCoor);
+                {'Transformed Y Coords'}, num2cell(handles.Objects(index).transformedYCoor)];
+        end
     end
 end
 set(handles.resultsTable,'Data', newData);  
