@@ -16,6 +16,15 @@ classdef Shapes < matlab.mixin.Heterogeneous & handle
         end
         
         function shear(obj, angle)
+            angle = angle/180 * pi;
+            x_shear_matrix = [1, tan(angle);
+                              0, 1];
+            tempMatrix = [obj.xCoor;
+                          obj.yCoor];
+            tempMatrix = x_shear_matrix * tempMatrix;
+            obj.transformedXCoor = tempMatrix(1,:);
+            obj.transformedYCoor = tempMatrix(2,:);
+            display(tempMatrix);
         end
         
         function scale(obj, x, y)
