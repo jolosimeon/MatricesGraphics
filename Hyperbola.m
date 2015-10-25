@@ -14,14 +14,31 @@ classdef Hyperbola < Shapes
         end
         
         function shear(obj, angle)
+            obj.shear@Shapes(angle);
+            angle = angle/180 * pi;
+            x_shear_matrix = [1, tan(angle);
+                              0, 1];
+            tempMatrix = [obj.xCoor;
+                          obj.yCoorNeg];
+            tempMatrix = x_shear_matrix * tempMatrix;
+            obj.transformedyCoorNeg = tempMatrix(2,:);
         end
         
-        function scale(obj, factor)
+        function scale(obj, x, y)
             obj.scale@Shapes(x,y);
             obj.transformedyCoorNeg = obj.yCoorNeg * y;
         end
         
         function rotate(obj, angle)
+            obj.rotate@Shapes(angle);
+            delta = angle;
+            delta = delta/ 180 * pi;
+            whole_matrix = [cos(delta), sin(delta);
+                            -sin(delta), cos(delta)];
+            tempMatrix = [obj.xCoor;
+                          obj.yCoorNeg];
+            tempMatrix = whole_matrix * tempMatrix;
+            obj.transformedyCoorNeg = tempMatrix(2,:);
         end
         
         function reflectOverX(obj)
