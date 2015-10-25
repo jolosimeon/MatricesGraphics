@@ -149,8 +149,8 @@ if ~isempty(answer)
     % Handle response
     switch choice
         case 'Vertical'
-            x = -100:1:100;
-            y = (c * x.^2) + (a * x) + b;
+            x = -100:1:100;       
+            y = (c * x.^2) + (a * x) + b;    
         case 'Horizontal'
             y = -100:1:100;
             x = (c * y.^2) + (a * y) + b;
@@ -175,7 +175,7 @@ function hyperbolaPushButton_Callback(hObject, eventdata, handles)
 % hObject    handle to hyperbolaPushButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-prompt = {'Center X-coordinate','Center Y-coordinate','Horizontal Distance','Vertical Distance'};
+prompt = {'Center X-coordinate','Center Y-coordinate','Horizontal Distance (2a)','Vertical Distance (2b)'};
 dlg_title = 'Create a Hyperbola';
 num_lines =  [1 40;1 40; 1 40; 1 40];
 defaultans = {'','','',''};
@@ -274,7 +274,7 @@ function ellipsePushButton_Callback(hObject, eventdata, handles)
 % hObject    handle to ellipsePushButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-prompt = {'Center X-coordinate','Center Y-coordinate','Horizontal Distance','Vertical Distance'};
+prompt = {'Center X-coordinate','Center Y-coordinate','Horizontal Distance (2a)','Vertical Distance (2b)'};
 dlg_title = 'Create an Ellipse';
 num_lines =  [1 40;1 40; 1 40; 1 40];
 defaultans = {'','','',''};
