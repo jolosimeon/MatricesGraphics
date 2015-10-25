@@ -506,5 +506,39 @@ for i = 1:numel(handles.Objects)
     handles.inputFileNames = [handles.inputFileNames; class(handles.Objects(i)), blanks(12 - length(class(handles.Objects(i))))];
 end
 set(handles.figuresListBox, 'string', {handles.inputFileNames});
+index = get(handles.figuresListBox,'value');
+newData = get(handles.resultsTable, 'Data');
+if isa(handles.Objects(index), 'Hyperbola')
+    if isempty(handles.Objects(index).transformedXCoor)
+        newData = [
+            {'X Coordinates  '}, num2cell(handles.Objects(index).xCoor);
+            {'Y Coordinates  '}, num2cell(handles.Objects(index).yCoor);
+            {'X Coordinates 2'}, num2cell(handles.Objects(index).xCoor2);
+            {'Y Coordinates 2'}, num2cell(handles.Objects(index).yCoor2)];
+    else
+        newData = [
+            {'X Coordinates         '}, num2cell(handles.Objects(index).xCoor);
+            {'Y Coordinates         '}, num2cell(handles.Objects(index).yCoor);
+            {'Transformed X Coords  '}, num2cell(handles.Objects(index).transformedXCoor);
+            {'Transformed Y Coords  '}, num2cell(handles.Objects(index).transformedYCoor);
+            {'X Coordinates 2       '}, num2cell(handles.Objects(index).xCoor2);
+            {'Y Coordinates 2       '}, num2cell(handles.Objects(index).yCoor2);
+            {'Transformed X Coords 2'}, num2cell(handles.Objects(index).transformedXCoor2);
+            {'Transformed Y Coords 2'}, num2cell(handles.Objects(index).transformedYCoor2)];
+    end
+else
+    if isempty(handles.Objects(index).transformedXCoor)
+        newData = [
+            {'X Coordinates'}, num2cell(handles.Objects(index).xCoor);
+            {'Y Coordinates'}, num2cell(handles.Objects(index).yCoor)];
+    else
+        newData = [
+            {'X Coordinates       '}, num2cell(handles.Objects(index).xCoor);
+            {'Y Coordinates       '}, num2cell(handles.Objects(index).yCoor);
+            {'Transformed X Coords'}, num2cell(handles.Objects(index).transformedXCoor);
+            {'Transformed Y Coords'}, num2cell(handles.Objects(index).transformedYCoor)];
+    end
+end
+set(handles.resultsTable,'Data', newData);  
 guidata(hObject,handles);
 
