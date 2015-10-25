@@ -93,7 +93,7 @@ answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
 tempPoint = Point;
 tempPoint.xCoor = str2double(answer(1));
 tempPoint.yCoor = str2double(answer(2));
-tempPoint.handle = plot(tempPoint.xCoor, tempPoint.yCoor, '*');
+plot(tempPoint.xCoor, tempPoint.yCoor, '*');
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempPoint;
 handles.inputFileNames = [handles.inputFileNames; 'Point',blanks(7)];
@@ -116,7 +116,7 @@ y = str2double([answer(2),answer(4)]);
 tempLineSegment = LineSegment;
 tempLineSegment.xCoor = x;
 tempLineSegment.yCoor = y;
-tempLineSegment.handle = plot(x, y);
+plot(x, y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempLineSegment;
 handles.inputFileNames = [handles.inputFileNames; 'Line Segment'];
@@ -163,7 +163,7 @@ if ~isempty(answer)
         tempParabola = Parabola;
         tempParabola.xCoor = x;
         tempParabola.yCoor = y;
-        tempParabola.handle = plot(x,y);
+        plot(x,y);
         handles.noOfObjects = handles.noOfObjects + 1;
         handles.Objects(handles.noOfObjects) = tempParabola;
         handles.inputFileNames = [handles.inputFileNames; 'Parabola',blanks(4)];
@@ -218,8 +218,8 @@ if (~isempty(answer))
         tempHyperbola.xCoor = x;
         tempHyperbola.yCoorNeg = negY;
         tempHyperbola.yCoor = posY;
-        tempHyperbola.handle = plot(x, posY);
-        tempHyperbola.handle2 = plot(x, negY);
+        plot(x, posY);
+        plot(x, negY);
         handles.noOfObjects = handles.noOfObjects + 1;
         handles.Objects(handles.noOfObjects) = tempHyperbola;
         handles.inputFileNames = [handles.inputFileNames; 'Hyperbola',blanks(3)];
@@ -257,8 +257,7 @@ y(size(y)) = y(1);
 tempPolygon = Polygon;
 tempPolygon.xCoor = x;
 tempPolygon.yCoor = y;
-h1 = plot(x, y);
-tempPolgyon.handle = h1;
+plot(x, y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempPolygon;
 handles.inputFileNames = [handles.inputFileNames; 'Polygon',blanks(5)];
@@ -294,7 +293,7 @@ y=k+b*sin(t);
 tempEllipse = Ellipse;
 tempEllipse.xCoor = x;
 tempEllipse.yCoor = y;
-tempEllipse.handle = plot(x,y);
+plot(x,y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempEllipse;
 handles.inputFileNames = [handles.inputFileNames; 'Ellipse',blanks(5)];
@@ -317,7 +316,7 @@ y = [0,str2double(answer(2))];
 tempVector = Vector;
 tempVector.xCoor = x;
 tempVector.yCoor = y;
-tempVector.handle = plot(x,y);
+plot(x,y);
 handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempVector;
 handles.inputFileNames = [handles.inputFileNames; 'Vector',blanks(6)];
@@ -392,7 +391,7 @@ drawAxis();
 
 % readdObjects
 handles.inputFileNames = [];
-readdObjects(hObject, handles);
+addObjects(hObject, handles);
 
 Value=index-1;
 if Value<1; Value=1;end
@@ -454,9 +453,9 @@ plot(a, y,'k');
 plot(-1*a,y,'k');
 axis([-100, 100, -100, 100]);
 
-function readdObjects(hObject, handles)
+function addObjects(hObject, handles)
 for i = 1:numel(handles.Objects)
-    % redraw on graph
+    % redraw plots on graph
     if isa(handles.Objects(i), 'Point')
         plot(handles.Objects(i).xCoor, handles.Objects(i).yCoor, '*');
     else
@@ -464,6 +463,10 @@ for i = 1:numel(handles.Objects)
     end
     if isa(handles.Objects(i), 'Hyperbola')
         plot(handles.Objects(i).xCoor, handles.Objects(i).yCoorNeg);
+    end
+    
+    % redraw transformed
+    if ~isempty(handles.Objects(i).transformedXCoor)
     end
     
     % readd to listbox
