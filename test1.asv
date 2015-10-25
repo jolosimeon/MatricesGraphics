@@ -98,7 +98,7 @@ handles.noOfObjects = handles.noOfObjects + 1;
 handles.Objects(handles.noOfObjects) = tempPoint;
 updateGraph(hObject, handles);
 set(handles.figuresListBox, 'Value', handles.noOfObjects);
-set(handles.originalValue,'string',['X = ' tempPoint.xCoor ' Y = ' tempPoint.yCoor ]);
+set(handles.originalValue,'string','X = 'num2str(answer(1)))
 guidata(hObject, handles);
 
 
