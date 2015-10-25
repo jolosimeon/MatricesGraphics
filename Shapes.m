@@ -18,9 +18,9 @@ classdef Shapes < matlab.mixin.Heterogeneous & handle
         function shear(obj, angle)
         end
         
-        function scale(obj, factor)
-            obj.transformedXCoor = obj.xCoor * factor;
-            obj.transformedYCoor = obj.yCoor * factor;
+        function scale(obj, x, y)
+            obj.transformedXCoor = obj.xCoor * x;
+            obj.transformedYCoor = obj.yCoor * y;
         end
         
         function rotate(obj, angle)

@@ -18,22 +18,20 @@ classdef Hyperbola < Shapes
         
         function scale(obj, factor)
             obj.scale@Shapes(x,y);
-            obj.transformedyCoorNeg = obj.yCoorNeg + y;
-            obj.transformedXCoor = obj.xCoor * factor;
-            obj.transformedYCoor = obj.yCoor * factor;
+            obj.transformedyCoorNeg = obj.yCoorNeg * y;
         end
         
         function rotate(obj, angle)
         end
         
         function reflectOverX(obj)
-            obj.transformedXCoor = obj.xCoor;
-            obj.transformedYCoor = -1 .* obj.yCoor;
+            obj.reflectOverX@Shapes(obj);
+            obj.transformedyCoorNeg = -1 .* obj.yCoorNeg;
         end
         
         function reflectOverY(obj)
-            obj.transformedXCoor = -1 .* obj.xCoor;
-            obj.transformedYCoor = obj.yCoor;
+            obj.reflectOverY@Shapes(obj);
+            obj.transformedyCoorNeg = obj.yCoorNeg;
         end
     end
     

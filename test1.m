@@ -422,7 +422,7 @@ switch get(handles.operationsComboBox, 'Value')
         num_lines =  [1 50; 1 50];
         defaultans = {'1','1'};
         answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
-        handles.Objects(get(handles.figuresListBox,'value')).scale(str2double(answer(1)), str2double(answer(2));
+        handles.Objects(get(handles.figuresListBox,'value')).scale(str2double(answer(1)), str2double(answer(2)));
         updateGraph(hObject, handles);
     case 4
         prompt = {'Angle: '};
@@ -468,12 +468,12 @@ for i = 1:numel(handles.Objects)
     % redraw transformed
     if ~isempty(handles.Objects(i).transformedXCoor)
         if isa(handles.Objects(i), 'Point')
-            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedYCoor, '*', 'g');
+            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedyCoor, '*', 'g');
         else
-            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedYCoor, 'g');
+            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedyCoor, 'g');
         end
         if isa(handles.Objects(i), 'Hyperbola')
-            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedYCoorNeg, 'g');
+            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedyCoorNeg, 'g');
         end
     end
     
