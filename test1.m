@@ -468,9 +468,9 @@ for i = 1:numel(handles.Objects)
     % redraw transformed
     if ~isempty(handles.Objects(i).transformedXCoor)
         if isa(handles.Objects(i), 'Point')
-            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedyCoor, '*', 'g');
+            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedYCoor, '*', 'g');
         else
-            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedyCoor, 'g');
+            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedYCoor, 'g');
         end
         if isa(handles.Objects(i), 'Hyperbola')
             plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedyCoorNeg, 'g');
