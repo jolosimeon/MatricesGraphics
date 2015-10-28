@@ -401,7 +401,7 @@ Value=index-1;
 handles.currentFigure = handles.currentFigure - 1;
 if Value<1
     Value=1;
-    handles.currentFigure = 0;
+    handles.currentFigure = 1;
 end
 
 updateGraph(hObject, handles);
@@ -489,10 +489,10 @@ for i = 1:numel(handles.Objects)
     
     if i == handles.currentFigure
         normal = 'r';
-        transformed = 'g';
+        prev = 'm';
     else
         normal = 'b';
-        transformed = 'c';
+        prev = 'c';
     end
     
     % redraw plots on graph
@@ -506,14 +506,14 @@ for i = 1:numel(handles.Objects)
     end
     
     % redraw transformed
-    if ~isempty(handles.Objects(i).transformedXCoor)
+    if ~isempty(handles.Objects(i).prevXCoor)
         if isa(handles.Objects(i), 'Point')
-            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedYCoor, [transformed '*']);
+            plot(handles.Objects(i).prevXCoor, handles.Objects(i).prevYCoor, [prev '*']);
         else
-            plot(handles.Objects(i).transformedXCoor, handles.Objects(i).transformedYCoor, transformed);
+            plot(handles.Objects(i).prevXCoor, handles.Objects(i).prevYCoor, prev);
         end
         if isa(handles.Objects(i), 'Hyperbola')
-            plot(handles.Objects(i).transformedXCoor2, handles.Objects(i).transformedYCoor2, transformed);
+            plot(handles.Objects(i).prevXCoor2, handles.Objects(i).prevYCoor2, prev);
         end
     end
     
@@ -523,9 +523,9 @@ end
 set(handles.figuresListBox, 'string', {handles.inputFileNames}, 'Value', handles.currentFigure);
 index = get(handles.figuresListBox,'value');
 newData = get(handles.resultsTable, 'Data');
-if index > 0
+if handles.noOfObjects > 0
     if isa(handles.Objects(index), 'Hyperbola')
-        if isempty(handles.Objects(index).transformedXCoor)
+        if isempty(handles.Objects(index).prevXCoor)
             newData = [
                 {'X Coordinates  '}, num2cell(handles.Objects(index).xCoor);
                 {'Y Coordinates  '}, num2cell(handles.Objects(index).yCoor);
@@ -535,15 +535,15 @@ if index > 0
             newData = [
                 {'X Coordinates         '}, num2cell(handles.Objects(index).xCoor);
                 {'Y Coordinates         '}, num2cell(handles.Objects(index).yCoor);
-                {'Transformed X Coords  '}, num2cell(handles.Objects(index).transformedXCoor);
-                {'Transformed Y Coords  '}, num2cell(handles.Objects(index).transformedYCoor);
+                {'Previous X Coords  '}, num2cell(handles.Objects(index).prevXCoor);
+                {'Previous Y Coords  '}, num2cell(handles.Objects(index).prevYCoor);
                 {'X Coordinates 2       '}, num2cell(handles.Objects(index).xCoor2);
                 {'Y Coordinates 2       '}, num2cell(handles.Objects(index).yCoor2);
-                {'Transformed X Coords 2'}, num2cell(handles.Objects(index).transformedXCoor2);
-                {'Transformed Y Coords 2'}, num2cell(handles.Objects(index).transformedYCoor2)];
+                {'Previous X Coords 2'}, num2cell(handles.Objects(index).prevXCoor2);
+                {'Previous Y Coords 2'}, num2cell(handles.Objects(index).prevYCoor2)];
         end
     else
-        if isempty(handles.Objects(index).transformedXCoor)
+        if isempty(handles.Objects(index).prevXCoor)
             newData = [
                 {'X Coordinates'}, num2cell(handles.Objects(index).xCoor);
                 {'Y Coordinates'}, num2cell(handles.Objects(index).yCoor)];
@@ -551,8 +551,8 @@ if index > 0
             newData = [
                 {'X Coordinates       '}, num2cell(handles.Objects(index).xCoor);
                 {'Y Coordinates       '}, num2cell(handles.Objects(index).yCoor);
-                {'Transformed X Coords'}, num2cell(handles.Objects(index).transformedXCoor);
-                {'Transformed Y Coords'}, num2cell(handles.Objects(index).transformedYCoor)];
+                {'Previous X Coords'}, num2cell(handles.Objects(index).prevXCoor);
+                {'Previous Y Coords'}, num2cell(handles.Objects(index).prevYCoor)];
         end
     end
 end
